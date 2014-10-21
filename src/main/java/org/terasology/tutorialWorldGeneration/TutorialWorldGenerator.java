@@ -34,6 +34,8 @@ public class TutorialWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new SurfaceProvider())
                 .addProvider(new SeaLevelProvider(0))
                 .addProvider(new MountainsProvider())
-                .addRasterizer(new TutorialWorldRasterizer());
+                .addProvider(new HouseProvider())
+                .addRasterizer(new TutorialWorldRasterizer())
+                .addRasterizer(new HouseRasterizer());
     }
 }
