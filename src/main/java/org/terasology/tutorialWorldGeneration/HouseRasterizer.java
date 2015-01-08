@@ -40,7 +40,9 @@ public class HouseRasterizer implements WorldRasterizer {
             if (houseFacet.getWorld(position)) {
                 // there should be a house here
                 // create a couple 3d regions to help iterate through the cube shape, inside and out
-                Vector3i centerHousePosition = position.clone();
+                // TODO: Tweaked for engine compile fix (update to TeraMath), may need review
+                //Vector3i centerHousePosition = position.clone();
+                Vector3i centerHousePosition = new Vector3i(position.x, position.y, position.z);
                 centerHousePosition.add(0, 4, 0);
                 Region3i walls = Region3i.createFromCenterExtents(centerHousePosition, 4);
                 Region3i inside = Region3i.createFromCenterExtents(centerHousePosition, 3);
