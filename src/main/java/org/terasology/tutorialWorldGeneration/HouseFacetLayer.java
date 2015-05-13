@@ -28,16 +28,14 @@ public class HouseFacetLayer extends AbstractFacetLayer {
         int dy = region.getRegion().minZ();
         g.translate(-dx, -dy);
 
-        for (Entry<Vector3i, Boolean> entry : houseFacet.getWorldEntries().entrySet()) {
-            if (entry.getValue()) {
-                int extent = 4;
+        for (Entry<Vector3i, House> entry : houseFacet.getWorldEntries().entrySet()) {
+            int extent = entry.getValue().getExtent();
 
-                Vector3i center = entry.getKey();
-                g.setColor(fillColor);
-                g.fillRect(center.x - extent, center.z - extent, 2 * extent, 2 * extent);
-                g.setColor(frameColor);
-                g.drawRect(center.x - extent, center.z - extent, 2 * extent, 2 * extent);
-            }
+            Vector3i center = entry.getKey();
+            g.setColor(fillColor);
+            g.fillRect(center.x - extent, center.z - extent, 2 * extent, 2 * extent);
+            g.setColor(frameColor);
+            g.drawRect(center.x - extent, center.z - extent, 2 * extent, 2 * extent);
         }
 
         g.dispose();
@@ -47,16 +45,14 @@ public class HouseFacetLayer extends AbstractFacetLayer {
     public String getWorldText(Region region, int wx, int wy) {
         HouseFacet houseFacet = region.getFacet(HouseFacet.class);
 
-        for (Entry<Vector3i, Boolean> entry : houseFacet.getWorldEntries().entrySet()) {
-            if (entry.getValue()) {
-                int extent = 4;
+        for (Entry<Vector3i, House> entry : houseFacet.getWorldEntries().entrySet()) {
+            int extent = entry.getValue().getExtent();
 
-                Vector3i center = entry.getKey();
-                Vector2i min = new Vector2i(center.x - extent, center.z - extent);
-                Vector2i max = new Vector2i(center.x + extent, center.z + extent);
-                if (Rect2i.createFromMinAndMax(min, max).contains(wx, wy)) {
-                    return "House";
-                }
+            Vector3i center = entry.getKey();
+            Vector2i min = new Vector2i(center.x - extent, center.z - extent);
+            Vector2i max = new Vector2i(center.x + extent, center.z + extent);
+            if (Rect2i.createFromMinAndMax(min, max).contains(wx, wy)) {
+                return "House";
             }
         }
 
