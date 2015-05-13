@@ -19,11 +19,10 @@ import org.terasology.math.Rect2i;
 import org.terasology.math.TeraMath;
 import org.terasology.math.Vector2i;
 import org.terasology.math.geom.Vector2f;
-import org.terasology.utilities.procedural.BrownianNoise3D;
-import org.terasology.utilities.procedural.Noise2D;
-import org.terasology.utilities.procedural.Noise3DTo2DAdapter;
+import org.terasology.utilities.procedural.BrownianNoise;
+import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.PerlinNoise;
-import org.terasology.utilities.procedural.SubSampledNoise2D;
+import org.terasology.utilities.procedural.SubSampledNoise;
 import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
@@ -33,11 +32,11 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 @Updates(@Facet(SurfaceHeightFacet.class))
 public class MountainsProvider implements FacetProvider {
 
-    private Noise2D mountainNoise;
+    private Noise mountainNoise;
 
     @Override
     public void setSeed(long seed) {
-        mountainNoise = new SubSampledNoise2D(new Noise3DTo2DAdapter(new BrownianNoise3D(new PerlinNoise(seed + 2), 8)), new Vector2f(0.001f, 0.001f), 1);
+        mountainNoise = new SubSampledNoise(new BrownianNoise(new PerlinNoise(seed + 2), 8), new Vector2f(0.001f, 0.001f), 1);
     }
 
     @Override

@@ -15,8 +15,10 @@
  */
 package org.terasology.tutorialWorldGeneration;
 
+import java.util.Map.Entry;
+
+import org.terasology.math.ChunkMath;
 import org.terasology.math.Region3i;
-import org.terasology.math.TeraMath;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
@@ -26,7 +28,7 @@ import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
 
 public class HouseRasterizer implements WorldRasterizer {
-    Block stone;
+    private Block stone;
 
     @Override
     public void initialize() {
@@ -36,11 +38,12 @@ public class HouseRasterizer implements WorldRasterizer {
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         HouseFacet houseFacet = chunkRegion.getFacet(HouseFacet.class);
-        for (Vector3i position : houseFacet.getWorldRegion()) {
-            if (houseFacet.getWorld(position)) {
+
+        for (Entry<Vector3i, Boolean> entry : houseFacet.getWorldEntries().entrySet()) {
+            if (entry.getValue()) {
                 // there should be a house here
                 // create a couple 3d regions to help iterate through the cube shape, inside and out
-                Vector3i centerHousePosition = new Vector3i(position);
+                Vector3i centerHousePosition = new Vector3i(entry.getKey());
                 centerHousePosition.add(0, 4, 0);
                 Region3i walls = Region3i.createFromCenterExtents(centerHousePosition, 4);
                 Region3i inside = Region3i.createFromCenterExtents(centerHousePosition, 3);
@@ -49,7 +52,7 @@ public class HouseRasterizer implements WorldRasterizer {
                 for (Vector3i newBlockPosition : walls) {
                     if (chunkRegion.getRegion().encompasses(newBlockPosition)
                             && !inside.encompasses(newBlockPosition)) {
-                        chunk.setBlock(TeraMath.calcBlockPos(newBlockPosition), stone);
+                        chunk.setBlock(ChunkMath.calcBlockPos(newBlockPosition), stone);
                     }
                 }
             }

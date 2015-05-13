@@ -18,10 +18,9 @@ package org.terasology.tutorialWorldGeneration;
 import org.terasology.math.Rect2i;
 import org.terasology.math.Vector2i;
 import org.terasology.math.geom.Vector2f;
-import org.terasology.utilities.procedural.Noise2D;
-import org.terasology.utilities.procedural.Noise3DTo2DAdapter;
+import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
-import org.terasology.utilities.procedural.SubSampledNoise2D;
+import org.terasology.utilities.procedural.SubSampledNoise;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
@@ -31,11 +30,11 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 @Produces(SurfaceHeightFacet.class)
 public class SurfaceProvider implements FacetProvider {
 
-    private Noise2D surfaceNoise;
+    private Noise surfaceNoise;
 
     @Override
     public void setSeed(long seed) {
-        surfaceNoise = new SubSampledNoise2D(new Noise3DTo2DAdapter(new SimplexNoise(seed), 0), new Vector2f(0.01f, 0.01f), 1);
+        surfaceNoise = new SubSampledNoise(new SimplexNoise(seed), new Vector2f(0.01f, 0.01f), 1);
     }
 
     @Override

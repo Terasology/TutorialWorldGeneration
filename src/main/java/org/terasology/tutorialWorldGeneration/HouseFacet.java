@@ -17,12 +17,12 @@ package org.terasology.tutorialWorldGeneration;
 
 import org.terasology.math.Region3i;
 import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.facets.base.BaseBooleanFieldFacet3D;
+import org.terasology.world.generation.facets.base.SparseBooleanFieldFacet3D;
 
 /**
  * Stores where the center of a house will be placed
  */
-public class HouseFacet extends BaseBooleanFieldFacet3D {
+public class HouseFacet extends SparseBooleanFieldFacet3D {
 
     public HouseFacet(Region3i targetRegion, Border3D border) {
         super(targetRegion, border);

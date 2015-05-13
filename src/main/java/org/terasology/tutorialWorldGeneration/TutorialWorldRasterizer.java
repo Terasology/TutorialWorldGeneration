@@ -15,7 +15,7 @@
  */
 package org.terasology.tutorialWorldGeneration;
 
-import org.terasology.math.TeraMath;
+import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
@@ -38,7 +38,7 @@ public class TutorialWorldRasterizer implements WorldRasterizer {
         SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
         for (Vector3i position : chunkRegion.getRegion()) {
             if (position.y < surfaceHeightFacet.getWorld(position.x, position.z)) {
-                chunk.setBlock(TeraMath.calcBlockPos(position), dirt);
+                chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
             }
         }
     }

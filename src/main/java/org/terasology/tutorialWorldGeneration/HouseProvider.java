@@ -16,7 +16,7 @@
 package org.terasology.tutorialWorldGeneration;
 
 import org.terasology.math.Vector2i;
-import org.terasology.utilities.procedural.Noise2D;
+import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.Facet;
@@ -28,10 +28,10 @@ import org.terasology.world.generation.Requires;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
 @Produces(HouseFacet.class)
-@Requires(@Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(bottom = 9, sides = 4)))
+@Requires(@Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(top = 9, sides = 4)))
 public class HouseProvider implements FacetProvider {
 
-    private Noise2D noise;
+    private Noise noise;
 
     @Override
     public void setSeed(long seed) {
@@ -47,7 +47,7 @@ public class HouseProvider implements FacetProvider {
         for (Vector2i position : surfaceHeightFacet.getWorldRegion()) {
             int surfaceHeight = (int) surfaceHeightFacet.getWorld(position);
 
-            if (facet.getWorldRegion().encompasses(position.x, surfaceHeight, position.y)
+            if (region.getRegion().encompasses(position.x, surfaceHeight, position.y)
                     && noise.noise(position.x, position.y) > 0.99) {
                 facet.setWorld(position.x, surfaceHeight, position.y, true);
             }
