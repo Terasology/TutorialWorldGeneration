@@ -17,7 +17,7 @@ package org.terasology.tutorialWorldGeneration;
 
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
 import org.terasology.engine.SimpleUri;
-import org.terasology.registry.CoreRegistry;
+import org.terasology.registry.In;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
 import org.terasology.world.generation.WorldBuilder;
 import org.terasology.world.generator.RegisterWorldGenerator;
@@ -30,9 +30,13 @@ public class TutorialWorldGenerator extends BaseFacetedWorldGenerator {
         super(uri);
     }
 
+    @In
+    private WorldGeneratorPluginLibrary worldGeneratorPluginLibrary;
+
     @Override
     protected WorldBuilder createWorld() {
-        return new WorldBuilder(CoreRegistry.get(WorldGeneratorPluginLibrary.class))
+        return new WorldBuilder(worldGeneratorPluginLibrary)
+                .setSeaLevel(0)
                 .addProvider(new SurfaceProvider())
                 .addProvider(new SeaLevelProvider(0))
                 .addProvider(new MountainsProvider())
