@@ -15,7 +15,7 @@
  */
 package org.terasology.tutorialWorldGeneration;
 
-import org.terasology.math.Rect2i;
+import org.terasology.math.geom.Rect2i;
 import org.terasology.math.TeraMath;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.WhiteNoise;

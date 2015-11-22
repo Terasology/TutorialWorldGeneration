@@ -19,6 +19,7 @@ import java.util.Map.Entry;
 
 import org.terasology.math.ChunkMath;
 import org.terasology.math.Region3i;
+import org.terasology.math.geom.BaseVector3i;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
@@ -39,7 +40,7 @@ public class HouseRasterizer implements WorldRasterizer {
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         HouseFacet houseFacet = chunkRegion.getFacet(HouseFacet.class);
 
-        for (Entry<Vector3i, House> entry : houseFacet.getWorldEntries().entrySet()) {
+        for (Entry<BaseVector3i, House> entry : houseFacet.getWorldEntries().entrySet()) {
             // there should be a house here
             // create a couple 3d regions to help iterate through the cube shape, inside and out
             Vector3i centerHousePosition = new Vector3i(entry.getKey());

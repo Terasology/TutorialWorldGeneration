@@ -15,8 +15,8 @@
  */
 package org.terasology.tutorialWorldGeneration;
 
-import org.terasology.math.Rect2i;
-import org.terasology.math.geom.Vector2i;
+import org.terasology.math.geom.BaseVector2i;
+import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2f;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
@@ -45,8 +45,8 @@ public class SurfaceProvider implements FacetProvider {
 
         // loop through every position on our 2d array
         Rect2i processRegion = facet.getWorldRegion();
-        for (Vector2i position : processRegion) {
-            facet.setWorld(position, surfaceNoise.noise(position.x, position.y) * 20);
+        for (BaseVector2i position : processRegion.contents()) {
+            facet.setWorld(position, surfaceNoise.noise(position.x(), position.y()) * 20);
         }
 
         // give our newly created and populated facet to the region

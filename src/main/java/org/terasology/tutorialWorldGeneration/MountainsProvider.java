@@ -15,9 +15,9 @@
  */
 package org.terasology.tutorialWorldGeneration;
 
-import org.terasology.math.Rect2i;
+import org.terasology.math.geom.Rect2i;
 import org.terasology.math.TeraMath;
-import org.terasology.math.geom.Vector2i;
+import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Vector2f;
 import org.terasology.utilities.procedural.BrownianNoise;
 import org.terasology.utilities.procedural.Noise;
@@ -45,9 +45,9 @@ public class MountainsProvider implements FacetProvider {
         float mountainHeight = 400;
         // loop through every position on our 2d array
         Rect2i processRegion = facet.getWorldRegion();
-        for (Vector2i position : processRegion) {
+        for (BaseVector2i position : processRegion.contents()) {
             // scale our max mountain height to noise (between -1 and 1)
-            float additiveMountainHeight = mountainNoise.noise(position.x, position.y) * mountainHeight;
+            float additiveMountainHeight = mountainNoise.noise(position.x(), position.y()) * mountainHeight;
             // dont bother subtracting mountain height,  that will allow unaffected regions
             additiveMountainHeight = TeraMath.clamp(additiveMountainHeight, 0, mountainHeight);
 
