@@ -6,6 +6,6 @@
     "description" : "A tutorial on world generation using facets",
     "dependencies" :
     [
-        {"id": "Core", "minVersion": "0.54.0"}
+        {"id": "Core", "minVersion": "1.0.0"}
     ]
 }
