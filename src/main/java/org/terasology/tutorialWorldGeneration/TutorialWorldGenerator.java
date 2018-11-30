@@ -18,6 +18,7 @@ package org.terasology.tutorialWorldGeneration;
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
 import org.terasology.engine.SimpleUri;
 import org.terasology.registry.In;
+import org.terasology.tutorialWorldGenerationBiomes.BiomeRasterizer;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
 import org.terasology.world.generation.WorldBuilder;
 import org.terasology.world.generator.RegisterWorldGenerator;
@@ -43,6 +44,7 @@ public class TutorialWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new HouseProvider())
                 .addRasterizer(new TutorialWorldRasterizer())
                 .addRasterizer(new HouseRasterizer())
+                .addRasterizer(new BiomeRasterizer())
                 .addPlugins();
     }
 }
