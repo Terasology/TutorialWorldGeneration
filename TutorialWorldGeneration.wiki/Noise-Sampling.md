@@ -1,0 +1,35 @@
+Now that we have the basic infrastructure of the facet system down pat.  We can do some more fun stuff,  namely make it not as flat.  Noise to the rescue!  We will use the seed information given to our ```SurfaceProvider``` to generate noise and apply it to our surface height.
+
+```java
+    private Noise surfaceNoise;
+
+    @Override
+    public void setSeed(long seed) {
+        surfaceNoise = new SimplexNoise(seed);
+    }
+```
+And plug it in to our facet data
+```java
+        // loop through every position on our 2d array
+        Rect2i processRegion = facet.getWorldRegion();
+        for (BaseVector2i position : processRegion.contents()) {
+            facet.setWorld(position, surfaceNoise.noise(position.x(), position.y()));
+        }
+```
+And if you are lucky like me,  you end up with a bumpy patch of dirt as the noise is only between -1 and 1
+
+Lets smooth it out a little bit by using subsampling (lerps between noise values) to gradually get to various noise values. And scale it up a bit so that we can get random surface values that are more interesting.
+```java
+        facet.setWorld(position, surfaceNoise.noise(position.x(), position.y()) * 20);
+```
+```java
+    @Override
+    public void setSeed(long seed) {
+        surfaceNoise = new SubSampledNoise(new SimplexNoise(seed), new Vector2f(0.01f, 0.01f), 1);
+    }
+```
+Progress! Now we have some rolling hills.
+
+![image](https://raw.githubusercontent.com/Terasology/TutorialWorldGeneration/master/images/Noise%20Sampling.png)
+
+[Next: Facet Modification](Facet-Modification)
