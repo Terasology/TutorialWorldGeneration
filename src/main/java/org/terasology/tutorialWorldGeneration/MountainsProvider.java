@@ -41,7 +41,7 @@ public class MountainsProvider implements ConfigurableFacetProvider {
         final float zoomRatio = 0.01f;
         float mountainNoiseZoom = configuration.mountainNoiseZoomRatio * zoomRatio;
         // Default zoom is 0.001f. Max zoom is 0.01f
-        mountainNoise = new SubSampledNoise(new BrownianNoise(new PerlinNoise(seed + 2), 8), new Vector2f(mountainNoiseZoom , mountainNoiseZoom), 1);
+        mountainNoise = new SubSampledNoise(new BrownianNoise(new PerlinNoise(seed + 2), 8), new Vector2f(mountainNoiseZoom, mountainNoiseZoom), 1);
     }
 
     @Override
@@ -61,25 +61,21 @@ public class MountainsProvider implements ConfigurableFacetProvider {
     }
 
     @Override
-    public String getConfigurationName()
-    {
+    public String getConfigurationName() {
         return "Mountains";
     }
 
     @Override
-    public Component getConfiguration()
-    {
+    public Component getConfiguration() {
         return configuration;
     }
 
     @Override
-    public void setConfiguration(Component configuration)
-    {
-        this.configuration = (MountainsConfiguration)configuration;
+    public void setConfiguration(Component configuration) {
+        this.configuration = (MountainsConfiguration) configuration;
     }
 
-    private static class MountainsConfiguration implements Component
-    {
+    private static class MountainsConfiguration implements Component {
         @Range(min = 200, max = 500f, increment = 20f, precision = 1, description = "Mountain Height")
         private float mountainHeight = 400;
 
