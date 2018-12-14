@@ -19,6 +19,11 @@ package org.terasology.tutorialWorldGenerationTrees;
  * Class for a tree, containing its variables.
  */
 public class Tree {
+    private final int TRUNK_HEIGHT = 4;
+    private final int CROWN_HEIGHT = 2;
+    private final int TOP_CROWN_HEIGHT = 1;
+    private final int CROWN_RADIUS = 2;
+    private final int TOP_CROWN_WIDTH = 3;
 
     /**
      * The height of a tree.
@@ -26,7 +31,7 @@ public class Tree {
      * @return the tree's height
      */
     public int getHeight() {
-        return getTrunkHeight() + getCrownHeight() + getTopCrownHeight();
+        return (TRUNK_HEIGHT + CROWN_HEIGHT + TOP_CROWN_HEIGHT);
     }
 
     /**
@@ -35,7 +40,7 @@ public class Tree {
      * @return the tree's width
      */
     public int getWidth() {
-        return (getCrownRadius() * 2) + 1;
+        return (CROWN_RADIUS * 2) + 1;
     }
 
     /**
@@ -44,7 +49,7 @@ public class Tree {
      * @return the tree's trunk height
      */
     public int getTrunkHeight() {
-        return 4;
+        return TRUNK_HEIGHT;
     }
 
     /**
@@ -53,7 +58,7 @@ public class Tree {
      * @return the tree's lower crown height, excluding the upper crown
      */
     public int getCrownHeight() {
-        return 2;
+        return CROWN_HEIGHT;
     }
 
     /**
@@ -62,7 +67,7 @@ public class Tree {
      * @return the tree's upper crown height, excluding lower crown
      */
     public int getTopCrownHeight() {
-        return 1;
+        return TOP_CROWN_HEIGHT;
     }
 
     /**
@@ -71,7 +76,7 @@ public class Tree {
      * @return the radius of the crown - from center
      */
     public int getCrownRadius() {
-        return 2;
+        return CROWN_RADIUS;
     }
 
     /**
@@ -80,6 +85,6 @@ public class Tree {
      * @return the width's of the upper crown
      */
     public int getTopCrownWidth() {
-        return 3;
+        return TOP_CROWN_WIDTH;
     }
 }
