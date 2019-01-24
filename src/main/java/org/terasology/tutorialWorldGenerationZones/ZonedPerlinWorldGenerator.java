@@ -49,8 +49,6 @@ import org.terasology.world.generation.WorldRasterizer;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 import org.terasology.world.generator.RegisterWorldGenerator;
 import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
-import org.terasology.world.liquid.LiquidData;
-import org.terasology.world.liquid.LiquidType;
 import org.terasology.world.zones.ConstantLayerThickness;
 import org.terasology.world.zones.LayeredZoneRegionFunction;
 import org.terasology.world.zones.SingleBlockRasterizer;
@@ -100,18 +98,16 @@ public class ZonedPerlinWorldGenerator extends BaseFacetedWorldGenerator {
                                 TeraMath.floorToInt(region.getFacet(SurfaceHeightFacet.class).getWorld(x, z)) < y && y <= seaLevel)
                                 .addRasterizer(new WorldRasterizer() {
                                     private Block water;
-                                    private LiquidData waterLiquid;
+
                                     @Override
                                     public void initialize() {
                                         water = CoreRegistry.get(BlockManager.class).getBlock("core:water");
-                                        waterLiquid = new LiquidData(LiquidType.WATER, LiquidData.MAX_LIQUID_DEPTH);
                                     }
 
                                     @Override
                                     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
                                         for (Vector3i pos : ChunkConstants.CHUNK_REGION) {
                                             chunk.setBlock(pos, water);
-                                            chunk.setLiquid(pos, waterLiquid);
                                         }
                                     }
                                 })))
