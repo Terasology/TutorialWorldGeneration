@@ -15,8 +15,10 @@
  */
 package org.terasology.tutorialWorldGenerationBiomes;
 
+import org.terasology.biomesAPI.BiomeRegistry;
 import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
+import org.terasology.registry.CoreRegistry;
 import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.Region;
@@ -27,8 +29,12 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
 @Requires({@Facet(SeaLevelFacet.class), @Facet(SurfaceHeightFacet.class)})
 public class BiomeRasterizer implements WorldRasterizer {
+    private BiomeRegistry biomeRegistry;
+
     @Override
-    public void initialize() { }
+    public void initialize() {
+        biomeRegistry = CoreRegistry.get(BiomeRegistry.class);
+    }
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
@@ -36,12 +42,12 @@ public class BiomeRasterizer implements WorldRasterizer {
         SeaLevelFacet seaLevelFacet = chunkRegion.getFacet(SeaLevelFacet.class);
         for (Vector3i position : chunkRegion.getRegion()) {
             if (position.y > Math.max(seaLevelFacet.getSeaLevel(), surfaceHeightFacet.getWorld(position.x, position.z)) + 10) {
-                chunk.setBiome(ChunkMath.calcBlockPos(position), TutorialBiome.SKY);
+                biomeRegistry.setBiome(TutorialBiome.SKY, position);
             } else if (surfaceHeightFacet.getWorld(position.x, position.z) + 1 > seaLevelFacet.getSeaLevel()) {
-                chunk.setBiome(ChunkMath.calcBlockPos(position), TutorialBiome.LAND);
+                biomeRegistry.setBiome(TutorialBiome.LAND, position);
             }
             else {
-                chunk.setBiome(ChunkMath.calcBlockPos(position), TutorialBiome.WATER);
+                biomeRegistry.setBiome(TutorialBiome.WATER, position);
             }
         }
     }

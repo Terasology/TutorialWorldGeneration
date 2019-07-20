@@ -15,12 +15,18 @@
  */
 package org.terasology.tutorialWorldGenerationBiomes;
 
-import org.terasology.world.biomes.BiomeRegistrator;
-import org.terasology.world.biomes.BiomeRegistry;
+import org.terasology.biomesAPI.BiomeRegistry;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
+import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.registry.In;
 
-public class TutorialBiomes implements BiomeRegistrator {
+@RegisterSystem
+public class TutorialBiomes extends BaseComponentSystem {
+    @In
+    BiomeRegistry registry;
+
     @Override
-    public void registerBiomes(BiomeRegistry registry) {
+    public void preBegin() {
         for (TutorialBiome biome : TutorialBiome.values()) {
             registry.registerBiome(biome);
         }

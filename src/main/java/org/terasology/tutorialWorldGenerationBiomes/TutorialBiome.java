@@ -15,16 +15,18 @@
  */
 package org.terasology.tutorialWorldGenerationBiomes;
 
-import org.terasology.world.biomes.Biome;
+import org.terasology.biomesAPI.Biome;
 
 public enum TutorialBiome implements Biome {
-    LAND("Land"), WATER("Water"), SKY("Sky");
+    LAND("Land", (short) 1), WATER("Water", (short) 2), SKY("Sky", (short) 3);
 
-    TutorialBiome(String name) {
+    TutorialBiome(String name, short biomeHash) {
         this.name = name;
+        this.biomeHash = biomeHash;
     }
 
     private final String name;
+    private final short biomeHash;
 
     @Override
     public String getId() {
@@ -34,5 +36,10 @@ public enum TutorialBiome implements Biome {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public short biomeHash() {
+        return biomeHash;
     }
 }
