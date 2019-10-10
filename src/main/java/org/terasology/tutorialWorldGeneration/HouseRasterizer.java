@@ -15,8 +15,6 @@
  */
 package org.terasology.tutorialWorldGeneration;
 
-import java.util.Map.Entry;
-
 import org.terasology.math.ChunkMath;
 import org.terasology.math.Region3i;
 import org.terasology.math.geom.BaseVector3i;
@@ -28,12 +26,14 @@ import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
 
+import java.util.Map.Entry;
+
 public class HouseRasterizer implements WorldRasterizer {
     private Block stone;
 
     @Override
     public void initialize() {
-        stone = CoreRegistry.get(BlockManager.class).getBlock("Core:Stone");
+        stone = CoreRegistry.get(BlockManager.class).getBlock("CoreBlocks:Stone");
     }
 
     @Override
