@@ -7,5 +7,6 @@
     "dependencies" : [
         {"id": "CoreBlocks", "minVersion": "1.0.0"}
     ],
-    "isWorld": true
+    "isWorld": true,
+    "isTutorial": true
 }
