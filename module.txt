@@ -1,11 +1,11 @@
 {
     "id" : "TutorialWorldGeneration",
-    "version" : "0.1.3-SNAPSHOT",
+    "version" : "0.2.0",
     "author" : "Josharias",
     "displayName" : "Tutorial World Generation",
     "description" : "A tutorial on world generation using facets",
     "dependencies" : [
-        {"id": "Core", "minVersion": "3.0.0"},
         {"id": "CoreBlocks", "minVersion": "1.0.0"}
-    ]
+    ],
+    "isWorld": true
 }
