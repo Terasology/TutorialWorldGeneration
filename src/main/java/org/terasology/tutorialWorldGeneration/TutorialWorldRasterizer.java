@@ -32,8 +32,8 @@ public class TutorialWorldRasterizer implements WorldRasterizer {
 
     @Override
     public void initialize() {
-        dirt = CoreRegistry.get(BlockManager.class).getBlock("CoreBlocks:Dirt");
-        grass = CoreRegistry.get(BlockManager.class).getBlock("CoreBlocks:Grass");
+        dirt = CoreRegistry.get(BlockManager.class).getBlock("CoreAssets:Dirt");
+        grass = CoreRegistry.get(BlockManager.class).getBlock("CoreAssets:Grass");
     }
 
     @Override

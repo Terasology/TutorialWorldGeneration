@@ -1,13 +1,13 @@
 {
-    "id" : "TutorialWorldGeneration",
-    "version" : "0.2.0",
-    "author" : "Josharias",
-    "displayName" : "Tutorial World Generation",
-    "description" : "A tutorial on world generation using facets",
-    "dependencies" : [
-        {"id": "CoreBlocks", "minVersion": "1.0.0"},
-        {"id": "BiomesAPI", "minVersion": "3.2.1"},
-        {"id": "CoreWorlds", "minVersion": "1.0.0"}
+    "id": "TutorialWorldGeneration",
+    "version": "1.0.0",
+    "author": "Josharias",
+    "displayName": "Tutorial World Generation",
+    "description": "A tutorial on world generation using facets",
+    "dependencies": [
+        { "id": "BiomesAPI", "minVersion": "3.2.1" },
+        { "id": "CoreAssets", "minVersion": "2.0.1" },
+        { "id": "CoreWorlds", "minVersion": "1.0.0" }
     ],
     "isWorld": true,
     "isTutorial": true

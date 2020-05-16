@@ -39,8 +39,8 @@ public class TreesRasterizer implements WorldRasterizerPlugin {
     public void initialize() {
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
 
-        trunk = blockManager.getBlock("CoreBlocks:OakTrunk");
-        leaf = blockManager.getBlock("CoreBlocks:GreenLeaf");
+        trunk = blockManager.getBlock("CoreAssets:OakTrunk");
+        leaf = blockManager.getBlock("CoreAssets:GreenLeaf");
     }
 
     @Override

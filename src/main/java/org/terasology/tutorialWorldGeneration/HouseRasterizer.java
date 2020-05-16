@@ -33,7 +33,7 @@ public class HouseRasterizer implements WorldRasterizer {
 
     @Override
     public void initialize() {
-        stone = CoreRegistry.get(BlockManager.class).getBlock("CoreBlocks:Stone");
+        stone = CoreRegistry.get(BlockManager.class).getBlock("CoreAssets:Stone");
     }
 
     @Override

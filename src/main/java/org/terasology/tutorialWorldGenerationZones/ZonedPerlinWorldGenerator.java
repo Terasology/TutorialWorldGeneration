@@ -88,7 +88,7 @@ public class ZonedPerlinWorldGenerator extends BaseFacetedWorldGenerator {
 
                                     @Override
                                     public void initialize() {
-                                        water = CoreRegistry.get(BlockManager.class).getBlock("CoreBlocks:water");
+                                        water = CoreRegistry.get(BlockManager.class).getBlock("CoreAssets:water");
                                     }
 
                                     @Override
@@ -112,25 +112,25 @@ public class ZonedPerlinWorldGenerator extends BaseFacetedWorldGenerator {
                         //The default zone for areas which aren't part of the other zones
                         .addZone(new Zone("Default", () -> true)
                                 .addZone(new Zone("Grass top", new LayeredZoneRegionFunction(new ConstantLayerThickness(1), GROUND))
-                                        .addRasterizer(new SingleBlockRasterizer("CoreBlocks:grass")))
+                                        .addRasterizer(new SingleBlockRasterizer("CoreAssets:grass")))
                                 .addZone(new Zone("Dirt", new LayeredZoneRegionFunction(new ConstantLayerThickness(20), SHALLOW_UNDERGROUND))
-                                        .addRasterizer(new SingleBlockRasterizer("CoreBlocks:dirt"))))
+                                        .addRasterizer(new SingleBlockRasterizer("CoreAssets:dirt"))))
 
                         //A zone controlling the mountains
                         .addZone(new Zone("Mountains", (x, y, z, region) -> y >= MountainSurfaceProvider.MIN_MOUNTAIN_HEIGHT
                                 && TeraMath.floorToInt(region.getFacet(SurfaceHeightFacet.class).getWorld(x, z)) == y)
                                 .addProvider(new MountainSurfaceProvider())
                                 .addZone(new Zone("Mountain top", new LayeredZoneRegionFunction(new ConstantLayerThickness(1), GROUND))
-                                        .addRasterizer(new SingleBlockRasterizer("CoreBlocks:Snow"))))
+                                        .addRasterizer(new SingleBlockRasterizer("CoreAssets:Snow"))))
 
                         //A zone controlling the beaches
                         .addZone(new Zone("Beach", (x, y, z, region) ->
                                 region.getFacet(SurfaceHeightFacet.class).getWorld(x, z) < seaLevel + 3)
-                                .addRasterizer(new SingleBlockRasterizer("CoreBlocks:Sand"))))
+                                .addRasterizer(new SingleBlockRasterizer("CoreAssets:Sand"))))
 
                 //The underground layer, which just fills the underground with stone
                 .addZone(new Zone("Underground", new LayeredZoneRegionFunction(new ConstantLayerThickness(1000), SHALLOW_UNDERGROUND))
-                        .addRasterizer(new SingleBlockRasterizer("CoreBlocks:Stone")))
+                        .addRasterizer(new SingleBlockRasterizer("CoreAssets:Stone")))
 
                 .addPlugins();
     }
