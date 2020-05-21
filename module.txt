@@ -5,7 +5,8 @@
     "displayName" : "Tutorial World Generation",
     "description" : "A tutorial on world generation using facets",
     "dependencies" : [
-        {"id": "Core", "minVersion": "3.0.0"},
-        {"id": "CoreBlocks", "minVersion": "1.0.0"}
+        {"id": "BiomesAPI", "minVersion": "4.0.0"},
+        {"id": "CoreBlocks", "minVersion": "1.0.0"},
+        {"id": "CoreWorlds", "minVersion": "1.1.0"}
     ]
 }

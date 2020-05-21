@@ -16,30 +16,33 @@
 package org.terasology.tutorialWorldGenerationBiomes;
 
 import org.terasology.biomesAPI.Biome;
+import org.terasology.naming.Name;
 
 public enum TutorialBiome implements Biome {
-    LAND("Land", (short) 1), WATER("Water", (short) 2), SKY("Sky", (short) 3);
+    LAND("Land"),
+    WATER("Water"),
+    SKY("Sky");
 
-    TutorialBiome(String name, short biomeHash) {
-        this.name = name;
-        this.biomeHash = biomeHash;
-    }
+    private final Name id;
+    private final String displayName;
 
-    private final String name;
-    private final short biomeHash;
-
-    @Override
-    public String getId() {
-        return "TutorialWorldGeneration:" + this.toString();
+    TutorialBiome(String displayName) {
+        this.id = new Name("TutorialWorldGeneration:" + name());
+        this.displayName = displayName;
     }
 
     @Override
-    public String getName() {
-        return name;
+    public Name getId() {
+        return id;
     }
 
     @Override
-    public short biomeHash() {
-        return biomeHash;
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
+    @Override
+    public String toString() {
+        return this.displayName;
     }
 }
