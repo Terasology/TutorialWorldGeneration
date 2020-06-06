@@ -36,7 +36,7 @@ public class LakesRasterizer implements WorldRasterizerPlugin {
 
     @Override
     public void initialize() {
-        water = CoreRegistry.get(BlockManager.class).getBlock("CoreBlocks:Water");
+        water = CoreRegistry.get(BlockManager.class).getBlock("CoreAssets:Water");
     }
 
     @Override
