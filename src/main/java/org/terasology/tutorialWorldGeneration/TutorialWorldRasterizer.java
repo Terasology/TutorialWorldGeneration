@@ -42,9 +42,9 @@ public class TutorialWorldRasterizer implements WorldRasterizer {
         for (Vector3i position : chunkRegion.getRegion()) {
             float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
             if (position.y < surfaceHeight - 1) {
-                chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
+                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), dirt);
             } else if (position.y < surfaceHeight) {
-                chunk.setBlock(ChunkMath.calcBlockPos(position), grass);
+                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), grass);
             }
         }
     }

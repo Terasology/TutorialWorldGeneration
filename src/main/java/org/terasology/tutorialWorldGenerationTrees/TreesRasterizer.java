@@ -83,11 +83,11 @@ public class TreesRasterizer implements WorldRasterizerPlugin {
             for (Vector3i newBlockPosition : treeRegion) {
                 if (chunkRegion.getRegion().encompasses(newBlockPosition)) {
                     if (treeTrunk.encompasses(newBlockPosition)) {
-                        chunk.setBlock(ChunkMath.calcBlockPos(newBlockPosition), trunk);
+                        chunk.setBlock(ChunkMath.calcRelativeBlockPos(newBlockPosition), trunk);
                     } else if (!treeTrunk.encompasses(newBlockPosition)) {
 
                         if (treeCrown.encompasses(newBlockPosition) || treeTop.encompasses(newBlockPosition)) {
-                            chunk.setBlock(ChunkMath.calcBlockPos(newBlockPosition), leaf);
+                            chunk.setBlock(ChunkMath.calcRelativeBlockPos(newBlockPosition), leaf);
                         }
                     }
                 }

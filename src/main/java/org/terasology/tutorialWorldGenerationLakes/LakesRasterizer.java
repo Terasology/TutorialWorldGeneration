@@ -48,7 +48,7 @@ public class LakesRasterizer implements WorldRasterizerPlugin {
             float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
             // check to see if the surface is under the sea level and if we are dealing with something above the surface
             if (position.y < seaLevel && position.y > surfaceHeight) {
-                chunk.setBlock(ChunkMath.calcBlockPos(position), water);
+                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), water);
             }
         }
     }
