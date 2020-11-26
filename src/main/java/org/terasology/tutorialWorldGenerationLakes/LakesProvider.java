@@ -27,11 +27,11 @@ import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.FacetProviderPlugin;
 import org.terasology.world.generation.GeneratingRegion;
 import org.terasology.world.generation.Updates;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.facets.ElevationFacet;
 import org.terasology.world.generator.plugin.RegisterPlugin;
 
 @RegisterPlugin
-@Updates(@Facet(SurfaceHeightFacet.class))
+@Updates(@Facet(ElevationFacet.class))
 public class LakesProvider implements FacetProviderPlugin {
 
     private Noise lakeNoise;
@@ -43,7 +43,7 @@ public class LakesProvider implements FacetProviderPlugin {
 
     @Override
     public void process(GeneratingRegion region) {
-        SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
+        ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
         float lakeDepth = 40;
         // loop through every position on our 2d array
         Rect2i processRegion = facet.getWorldRegion();

@@ -16,7 +16,6 @@
 package org.terasology.tutorialWorldGenerationBiomes;
 
 import org.terasology.biomesAPI.BiomeRegistry;
-import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.chunks.CoreChunk;
@@ -24,10 +23,10 @@ import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.Requires;
 import org.terasology.world.generation.WorldRasterizer;
+import org.terasology.world.generation.facets.ElevationFacet;
 import org.terasology.world.generation.facets.SeaLevelFacet;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
-@Requires({@Facet(SeaLevelFacet.class), @Facet(SurfaceHeightFacet.class)})
+@Requires({@Facet(SeaLevelFacet.class), @Facet(ElevationFacet.class)})
 public class BiomeRasterizer implements WorldRasterizer {
     private BiomeRegistry biomeRegistry;
 
@@ -38,12 +37,12 @@ public class BiomeRasterizer implements WorldRasterizer {
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
-        SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
+        ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
         SeaLevelFacet seaLevelFacet = chunkRegion.getFacet(SeaLevelFacet.class);
         for (Vector3i position : chunkRegion.getRegion()) {
-            if (position.y > Math.max(seaLevelFacet.getSeaLevel(), surfaceHeightFacet.getWorld(position.x, position.z)) + 10) {
+            if (position.y > Math.max(seaLevelFacet.getSeaLevel(), elevationFacet.getWorld(position.x, position.z)) + 10) {
                 biomeRegistry.setBiome(TutorialBiome.SKY, position);
-            } else if (surfaceHeightFacet.getWorld(position.x, position.z) + 1 > seaLevelFacet.getSeaLevel()) {
+            } else if (elevationFacet.getWorld(position.x, position.z) + 1 > seaLevelFacet.getSeaLevel()) {
                 biomeRegistry.setBiome(TutorialBiome.LAND, position);
             }
             else {
