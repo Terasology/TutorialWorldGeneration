@@ -44,7 +44,7 @@ public class TutorialWorldRasterizer implements WorldRasterizer {
         SurfacesFacet surfacesFacet = chunkRegion.getFacet(SurfacesFacet.class);
         for (Vector3i position : chunkRegion.getRegion()) {
             float surfaceHeight = elevationFacet.getWorld(position.x, position.z);
-            if (surfacesFacet.get(JomlUtil.from(position))) {
+            if (surfacesFacet.getWorld(JomlUtil.from(position))) {
                 chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), grass);
             } else if (position.y < surfaceHeight) {
                 chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), dirt);
