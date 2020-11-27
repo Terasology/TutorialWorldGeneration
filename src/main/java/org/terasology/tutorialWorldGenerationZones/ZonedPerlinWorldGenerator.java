@@ -15,7 +15,18 @@
  */
 package org.terasology.tutorialWorldGenerationZones;
 
-import org.terasology.core.world.generator.facetProviders.*;
+import org.terasology.core.world.generator.facetProviders.BiomeProvider;
+import org.terasology.core.world.generator.facetProviders.DefaultFloraProvider;
+import org.terasology.core.world.generator.facetProviders.DefaultTreeProvider;
+import org.terasology.core.world.generator.facetProviders.PerlinBaseSurfaceProvider;
+import org.terasology.core.world.generator.facetProviders.PerlinHillsAndMountainsProvider;
+import org.terasology.core.world.generator.facetProviders.PerlinHumidityProvider;
+import org.terasology.core.world.generator.facetProviders.PerlinOceanProvider;
+import org.terasology.core.world.generator.facetProviders.PerlinRiverProvider;
+import org.terasology.core.world.generator.facetProviders.PerlinSurfaceTemperatureProvider;
+import org.terasology.core.world.generator.facetProviders.PlateauProvider;
+import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
+import org.terasology.core.world.generator.facetProviders.SurfaceToDensityProvider;
 import org.terasology.core.world.generator.rasterizers.FloraRasterizer;
 import org.terasology.core.world.generator.rasterizers.TreeRasterizer;
 import org.terasology.engine.SimpleUri;
@@ -35,7 +46,7 @@ import org.terasology.world.generation.BaseFacetedWorldGenerator;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldBuilder;
 import org.terasology.world.generation.WorldRasterizer;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.facets.ElevationFacet;
 import org.terasology.world.generator.RegisterWorldGenerator;
 import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
 import org.terasology.world.zones.ConstantLayerThickness;
@@ -43,7 +54,9 @@ import org.terasology.world.zones.LayeredZoneRegionFunction;
 import org.terasology.world.zones.SingleBlockRasterizer;
 import org.terasology.world.zones.Zone;
 
-import static org.terasology.world.zones.LayeredZoneRegionFunction.LayeredZoneOrdering.*;
+import static org.terasology.world.zones.LayeredZoneRegionFunction.LayeredZoneOrdering.ABOVE_GROUND;
+import static org.terasology.world.zones.LayeredZoneRegionFunction.LayeredZoneOrdering.GROUND;
+import static org.terasology.world.zones.LayeredZoneRegionFunction.LayeredZoneOrdering.SHALLOW_UNDERGROUND;
 
 @RegisterWorldGenerator(id = "zonedperlin", displayName = "ZonedPerlin", description = "Perlin world generator using zones")
 public class ZonedPerlinWorldGenerator extends BaseFacetedWorldGenerator {
@@ -82,7 +95,7 @@ public class ZonedPerlinWorldGenerator extends BaseFacetedWorldGenerator {
 
                         //A zone for the ocean, existing in between the ground height and sea level
                         .addZone(new Zone("Ocean", (x, y, z, region) ->
-                                TeraMath.floorToInt(region.getFacet(SurfaceHeightFacet.class).getWorld(x, z)) < y && y <= seaLevel)
+                                TeraMath.floorToInt(region.getFacet(ElevationFacet.class).getWorld(x, z)) < y && y <= seaLevel)
                                 .addRasterizer(new WorldRasterizer() {
                                     private Block water;
 
@@ -118,14 +131,14 @@ public class ZonedPerlinWorldGenerator extends BaseFacetedWorldGenerator {
 
                         //A zone controlling the mountains
                         .addZone(new Zone("Mountains", (x, y, z, region) -> y >= MountainSurfaceProvider.MIN_MOUNTAIN_HEIGHT
-                                && TeraMath.floorToInt(region.getFacet(SurfaceHeightFacet.class).getWorld(x, z)) == y)
+                                && TeraMath.floorToInt(region.getFacet(ElevationFacet.class).getWorld(x, z)) == y)
                                 .addProvider(new MountainSurfaceProvider())
                                 .addZone(new Zone("Mountain top", new LayeredZoneRegionFunction(new ConstantLayerThickness(1), GROUND))
                                         .addRasterizer(new SingleBlockRasterizer("CoreAssets:Snow"))))
 
                         //A zone controlling the beaches
                         .addZone(new Zone("Beach", (x, y, z, region) ->
-                                region.getFacet(SurfaceHeightFacet.class).getWorld(x, z) < seaLevel + 3)
+                                region.getFacet(ElevationFacet.class).getWorld(x, z) < seaLevel + 3)
                                 .addRasterizer(new SingleBlockRasterizer("CoreAssets:Sand"))))
 
                 //The underground layer, which just fills the underground with stone

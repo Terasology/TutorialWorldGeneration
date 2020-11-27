@@ -16,6 +16,7 @@
 package org.terasology.tutorialWorldGeneration;
 
 import org.terasology.math.ChunkMath;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
@@ -23,7 +24,8 @@ import org.terasology.world.block.BlockManager;
 import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.facets.ElevationFacet;
+import org.terasology.world.generation.facets.SurfacesFacet;
 
 public class TutorialWorldRasterizer implements WorldRasterizer {
 
@@ -38,13 +40,14 @@ public class TutorialWorldRasterizer implements WorldRasterizer {
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
-        SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
+        ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
+        SurfacesFacet surfacesFacet = chunkRegion.getFacet(SurfacesFacet.class);
         for (Vector3i position : chunkRegion.getRegion()) {
-            float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
-            if (position.y < surfaceHeight - 1) {
-                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), dirt);
-            } else if (position.y < surfaceHeight) {
+            float surfaceHeight = elevationFacet.getWorld(position.x, position.z);
+            if (surfacesFacet.getWorld(JomlUtil.from(position))) {
                 chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), grass);
+            } else if (position.y < surfaceHeight) {
+                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), dirt);
             }
         }
     }

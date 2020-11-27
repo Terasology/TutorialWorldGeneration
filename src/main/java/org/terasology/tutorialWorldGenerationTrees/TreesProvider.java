@@ -15,18 +15,22 @@
  */
 package org.terasology.tutorialWorldGenerationTrees;
 
-import org.terasology.math.TeraMath;
-import org.terasology.math.geom.Rect2i;
+import org.terasology.math.Region3i;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.WhiteNoise;
-import org.terasology.world.generation.*;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.Border3D;
+import org.terasology.world.generation.Facet;
+import org.terasology.world.generation.FacetProviderPlugin;
+import org.terasology.world.generation.GeneratingRegion;
+import org.terasology.world.generation.Produces;
+import org.terasology.world.generation.Requires;
+import org.terasology.world.generation.facets.SurfacesFacet;
 
 /**
  * Class for placing trees, using WhiteNoise.
  */
 @Produces(TreesFacet.class)
-@Requires(@Facet(SurfaceHeightFacet.class))
+@Requires(@Facet(SurfacesFacet.class))
 public class TreesProvider implements FacetProviderPlugin {
     private Noise treesNoise;
 
@@ -40,19 +44,19 @@ public class TreesProvider implements FacetProviderPlugin {
         Border3D border = region.getBorderForFacet(TreesFacet.class).extendBy(0, 7, 1);
         TreesFacet facet = new TreesFacet(region.getRegion(), border);
 
-        SurfaceHeightFacet surfaceHeightFacet = region.getRegionFacet(SurfaceHeightFacet.class);
-        Rect2i worldRegion = surfaceHeightFacet.getWorldRegion();
+        SurfacesFacet surfacesFacet = region.getRegionFacet(SurfacesFacet.class);
+        Region3i worldRegion = surfacesFacet.getWorldRegion();
 
-        for (int wz = worldRegion.minY(); wz <= worldRegion.maxY(); wz++) {
+        for (int wz = worldRegion.minZ(); wz <= worldRegion.maxZ(); wz++) {
             for (int wx = worldRegion.minX(); wx <= worldRegion.maxX(); wx++) {
-                int surfaceHeight = TeraMath.floorToInt(surfaceHeightFacet.getWorld(wx, wz));
+                for (int surfaceHeight : surfacesFacet.getWorldColumn(wx, wz)) {
 
-                // check if height is within this region
-                if (surfaceHeight >= facet.getWorldRegion().minY() &&
-                        surfaceHeight <= facet.getWorldRegion().maxY()) {
+                    // check if point is within this region
+                    if (facet.getWorldRegion().encompasses(wx, surfaceHeight, wz)) {
 
-                    if (treesNoise.noise(wx, wz) > 0.99) {
-                        facet.setWorld(wx, surfaceHeight, wz, new Tree());
+                        if (treesNoise.noise(wx, surfaceHeight, wz) > 0.99) {
+                            facet.setWorld(wx, surfaceHeight, wz, new Tree());
+                        }
                     }
                 }
             }

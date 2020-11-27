@@ -24,9 +24,9 @@ import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
 import org.terasology.world.generation.Updates;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.facets.ElevationFacet;
 
-@Updates(@Facet(SurfaceHeightFacet.class))
+@Updates(@Facet(ElevationFacet.class))
 public class MountainSurfaceProvider implements FacetProvider {
 
     private Noise mountainNoise;
@@ -40,7 +40,7 @@ public class MountainSurfaceProvider implements FacetProvider {
 
     @Override
     public void process(GeneratingRegion region) {
-        SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
+        ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
         for (BaseVector2i pos : facet.getWorldRegion().contents()) {
             float height = facet.getWorld(pos);
             if (height >= MIN_MOUNTAIN_HEIGHT) {

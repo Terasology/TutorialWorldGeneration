@@ -16,9 +16,9 @@
 package org.terasology.tutorialWorldGeneration;
 
 import org.terasology.entitySystem.Component;
-import org.terasology.math.geom.Rect2i;
 import org.terasology.math.TeraMath;
 import org.terasology.math.geom.BaseVector2i;
+import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2f;
 import org.terasology.nui.properties.Range;
 import org.terasology.utilities.procedural.BrownianNoise;
@@ -29,9 +29,9 @@ import org.terasology.world.generation.ConfigurableFacetProvider;
 import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.GeneratingRegion;
 import org.terasology.world.generation.Updates;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.facets.ElevationFacet;
 
-@Updates(@Facet(SurfaceHeightFacet.class))
+@Updates(@Facet(ElevationFacet.class))
 public class MountainsProvider implements ConfigurableFacetProvider {
 
     private Noise mountainNoise;
@@ -49,7 +49,7 @@ public class MountainsProvider implements ConfigurableFacetProvider {
 
     @Override
     public void process(GeneratingRegion region) {
-        SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
+        ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
         float mountainHeight = configuration.mountainHeight;
         // loop through every position on our 2d array
         Rect2i processRegion = facet.getWorldRegion();
