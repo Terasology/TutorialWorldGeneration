@@ -15,20 +15,21 @@
  */
 package org.terasology.tutorialWorldGenerationLakes;
 
-import org.terasology.math.TeraMath;
-import org.terasology.math.geom.BaseVector2i;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2f;
-import org.terasology.utilities.procedural.BrownianNoise;
-import org.terasology.utilities.procedural.Noise;
-import org.terasology.utilities.procedural.PerlinNoise;
-import org.terasology.utilities.procedural.SubSampledNoise;
-import org.terasology.world.generation.Facet;
-import org.terasology.world.generation.FacetProviderPlugin;
-import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Updates;
-import org.terasology.world.generation.facets.ElevationFacet;
-import org.terasology.world.generator.plugin.RegisterPlugin;
+import org.joml.Vector2f;
+import org.joml.Vector2ic;
+import org.terasology.engine.utilities.procedural.BrownianNoise;
+import org.terasology.engine.utilities.procedural.Noise;
+import org.terasology.engine.utilities.procedural.PerlinNoise;
+import org.terasology.engine.utilities.procedural.SubSampledNoise;
+import org.terasology.engine.world.block.BlockAreac;
+import org.terasology.engine.world.generation.Facet;
+import org.terasology.engine.world.generation.FacetProviderPlugin;
+import org.terasology.engine.world.generation.GeneratingRegion;
+import org.terasology.engine.world.generation.Updates;
+import org.terasology.engine.world.generation.facets.ElevationFacet;
+import org.terasology.engine.world.generator.plugin.RegisterPlugin;
+
+import static org.joml.Math.clamp;
 
 @RegisterPlugin
 @Updates(@Facet(ElevationFacet.class))
@@ -46,11 +47,11 @@ public class LakesProvider implements FacetProviderPlugin {
         ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
         float lakeDepth = 40;
         // loop through every position on our 2d array
-        Rect2i processRegion = facet.getWorldRegion();
-        for (BaseVector2i position : processRegion.contents()) {
+        BlockAreac processRegion = facet.getWorldArea();
+        for (Vector2ic position : processRegion) {
             float additiveLakeDepth = lakeNoise.noise(position.x(), position.y()) * lakeDepth;
             // dont bother adding lake height,  that will allow unaffected regions
-            additiveLakeDepth = TeraMath.clamp(additiveLakeDepth, -lakeDepth, 0);
+            additiveLakeDepth = clamp(additiveLakeDepth, -lakeDepth, 0);
 
             facet.setWorld(position, facet.getWorld(position) + additiveLakeDepth);
         }

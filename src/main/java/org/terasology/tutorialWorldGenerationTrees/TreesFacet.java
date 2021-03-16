@@ -15,16 +15,16 @@
  */
 package org.terasology.tutorialWorldGenerationTrees;
 
-import org.terasology.math.Region3i;
-import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.facets.base.SparseObjectFacet3D;
+import org.terasology.engine.world.block.BlockRegion;
+import org.terasology.engine.world.generation.Border3D;
+import org.terasology.engine.world.generation.facets.base.SparseObjectFacet3D;
 
 /**
  * Stores the trees' position - Facet.
  */
 public class TreesFacet extends SparseObjectFacet3D<Tree> {
 
-    public TreesFacet(Region3i targetRegion, Border3D border) {
+    public TreesFacet(BlockRegion targetRegion, Border3D border) {
         super(targetRegion, border);
     }
 }

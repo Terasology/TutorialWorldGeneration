@@ -15,16 +15,17 @@
  */
 package org.terasology.tutorialWorldGeneration;
 
-import org.terasology.math.ChunkMath;
-import org.terasology.math.Region3i;
+import org.joml.Vector3i;
+import org.joml.Vector3ic;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.block.BlockRegion;
+import org.terasology.engine.world.chunks.Chunks;
+import org.terasology.engine.world.chunks.CoreChunk;
+import org.terasology.engine.world.generation.Region;
+import org.terasology.engine.world.generation.WorldRasterizer;
 import org.terasology.math.geom.BaseVector3i;
-import org.terasology.math.geom.Vector3i;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.chunks.CoreChunk;
-import org.terasology.world.generation.Region;
-import org.terasology.world.generation.WorldRasterizer;
 
 import java.util.Map.Entry;
 
@@ -40,20 +41,20 @@ public class HouseRasterizer implements WorldRasterizer {
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         HouseFacet houseFacet = chunkRegion.getFacet(HouseFacet.class);
 
-        for (Entry<BaseVector3i, House> entry : houseFacet.getWorldEntries().entrySet()) {
+        for (Entry<Vector3ic, House> entry : houseFacet.getWorldEntries().entrySet()) {
             // there should be a house here
             // create a couple 3d regions to help iterate through the cube shape, inside and out
             Vector3i centerHousePosition = new Vector3i(entry.getKey());
             int extent = entry.getValue().getExtent();
             centerHousePosition.add(0, extent, 0);
-            Region3i walls = Region3i.createFromCenterExtents(centerHousePosition, extent);
-            Region3i inside = Region3i.createFromCenterExtents(centerHousePosition, extent - 1);
+            BlockRegion walls = BlockRegion.createFromCenterExtents(centerHousePosition, extent);
+            BlockRegion inside = BlockRegion.createFromCenterExtents(centerHousePosition, extent - 1);
 
             // loop through each of the positions in the cube, ignoring the is
-            for (Vector3i newBlockPosition : walls) {
-                if (chunkRegion.getRegion().encompasses(newBlockPosition)
-                        && !inside.encompasses(newBlockPosition)) {
-                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(newBlockPosition), stone);
+            for (Vector3ic newBlockPosition : walls) {
+                if (chunkRegion.getRegion().contains(newBlockPosition)
+                        && !inside.contains(newBlockPosition)) {
+                    chunk.setBlock(Chunks.toRelative(newBlockPosition), stone);
                 }
             }
         }

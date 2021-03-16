@@ -15,19 +15,19 @@
  */
 package org.terasology.tutorialWorldGenerationLakes;
 
-import org.terasology.math.ChunkMath;
-import org.terasology.math.geom.Vector3i;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.chunks.CoreChunk;
-import org.terasology.world.generation.Facet;
-import org.terasology.world.generation.Region;
-import org.terasology.world.generation.Requires;
-import org.terasology.world.generation.WorldRasterizerPlugin;
-import org.terasology.world.generation.facets.ElevationFacet;
-import org.terasology.world.generation.facets.SeaLevelFacet;
-import org.terasology.world.generator.plugin.RegisterPlugin;
+import org.joml.Vector3ic;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.chunks.Chunks;
+import org.terasology.engine.world.chunks.CoreChunk;
+import org.terasology.engine.world.generation.Facet;
+import org.terasology.engine.world.generation.Region;
+import org.terasology.engine.world.generation.Requires;
+import org.terasology.engine.world.generation.WorldRasterizerPlugin;
+import org.terasology.engine.world.generation.facets.ElevationFacet;
+import org.terasology.engine.world.generation.facets.SeaLevelFacet;
+import org.terasology.engine.world.generator.plugin.RegisterPlugin;
 
 @RegisterPlugin
 @Requires({@Facet(SeaLevelFacet.class), @Facet(ElevationFacet.class)})
@@ -44,11 +44,11 @@ public class LakesRasterizer implements WorldRasterizerPlugin {
         ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
         SeaLevelFacet seaLevelFacet = chunkRegion.getFacet(SeaLevelFacet.class);
         int seaLevel = seaLevelFacet.getSeaLevel();
-        for (Vector3i position : chunkRegion.getRegion()) {
-            float surfaceHeight = elevationFacet.getWorld(position.x, position.z);
+        for (Vector3ic position : chunkRegion.getRegion()) {
+            float surfaceHeight = elevationFacet.getWorld(position.x(), position.z());
             // check to see if the surface is under the sea level and if we are dealing with something above the surface
-            if (position.y < seaLevel && position.y > surfaceHeight) {
-                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), water);
+            if (position.y() < seaLevel && position.y() > surfaceHeight) {
+                chunk.setBlock(Chunks.toRelative(position), water);
             }
         }
     }

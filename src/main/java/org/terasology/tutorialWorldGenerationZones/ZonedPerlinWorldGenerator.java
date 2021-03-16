@@ -15,6 +15,9 @@
  */
 package org.terasology.tutorialWorldGenerationZones;
 
+import org.joml.Vector2i;
+import org.joml.Vector3f;
+import org.joml.Vector3ic;
 import org.terasology.core.world.generator.facetProviders.BiomeProvider;
 import org.terasology.core.world.generator.facetProviders.DefaultFloraProvider;
 import org.terasology.core.world.generator.facetProviders.DefaultTreeProvider;
@@ -29,34 +32,30 @@ import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
 import org.terasology.core.world.generator.facetProviders.SurfaceToDensityProvider;
 import org.terasology.core.world.generator.rasterizers.FloraRasterizer;
 import org.terasology.core.world.generator.rasterizers.TreeRasterizer;
-import org.terasology.engine.SimpleUri;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.logic.spawner.FixedSpawner;
-import org.terasology.math.TeraMath;
-import org.terasology.math.geom.ImmutableVector2i;
-import org.terasology.math.geom.Vector3f;
-import org.terasology.math.geom.Vector3i;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.registry.In;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.chunks.ChunkConstants;
-import org.terasology.world.chunks.CoreChunk;
-import org.terasology.world.generation.BaseFacetedWorldGenerator;
-import org.terasology.world.generation.Region;
-import org.terasology.world.generation.WorldBuilder;
-import org.terasology.world.generation.WorldRasterizer;
-import org.terasology.world.generation.facets.ElevationFacet;
-import org.terasology.world.generator.RegisterWorldGenerator;
-import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
-import org.terasology.world.zones.ConstantLayerThickness;
-import org.terasology.world.zones.LayeredZoneRegionFunction;
-import org.terasology.world.zones.SingleBlockRasterizer;
-import org.terasology.world.zones.Zone;
+import org.terasology.engine.core.SimpleUri;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.logic.spawner.FixedSpawner;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.chunks.Chunks;
+import org.terasology.engine.world.chunks.CoreChunk;
+import org.terasology.engine.world.generation.BaseFacetedWorldGenerator;
+import org.terasology.engine.world.generation.Region;
+import org.terasology.engine.world.generation.WorldBuilder;
+import org.terasology.engine.world.generation.WorldRasterizer;
+import org.terasology.engine.world.generation.facets.ElevationFacet;
+import org.terasology.engine.world.generator.RegisterWorldGenerator;
+import org.terasology.engine.world.generator.plugin.WorldGeneratorPluginLibrary;
+import org.terasology.engine.world.zones.ConstantLayerThickness;
+import org.terasology.engine.world.zones.LayeredZoneRegionFunction;
+import org.terasology.engine.world.zones.SingleBlockRasterizer;
+import org.terasology.engine.world.zones.Zone;
 
-import static org.terasology.world.zones.LayeredZoneRegionFunction.LayeredZoneOrdering.ABOVE_GROUND;
-import static org.terasology.world.zones.LayeredZoneRegionFunction.LayeredZoneOrdering.GROUND;
-import static org.terasology.world.zones.LayeredZoneRegionFunction.LayeredZoneOrdering.SHALLOW_UNDERGROUND;
+import static org.terasology.engine.world.zones.LayeredZoneRegionFunction.LayeredZoneOrdering.ABOVE_GROUND;
+import static org.terasology.engine.world.zones.LayeredZoneRegionFunction.LayeredZoneOrdering.GROUND;
+import static org.terasology.engine.world.zones.LayeredZoneRegionFunction.LayeredZoneOrdering.SHALLOW_UNDERGROUND;
 
 @RegisterWorldGenerator(id = "zonedperlin", displayName = "ZonedPerlin", description = "Perlin world generator using zones")
 public class ZonedPerlinWorldGenerator extends BaseFacetedWorldGenerator {
@@ -78,7 +77,7 @@ public class ZonedPerlinWorldGenerator extends BaseFacetedWorldGenerator {
     @Override
     protected WorldBuilder createWorld() {
         int seaLevel = 32;
-        ImmutableVector2i spawnPos = new ImmutableVector2i(0, 0); // as used by the spawner
+        Vector2i spawnPos = new Vector2i(0, 0); // as used by the spawner
 
         return new WorldBuilder(worldGeneratorPluginLibrary)
                 .setSeaLevel(seaLevel)
@@ -95,7 +94,7 @@ public class ZonedPerlinWorldGenerator extends BaseFacetedWorldGenerator {
 
                         //A zone for the ocean, existing in between the ground height and sea level
                         .addZone(new Zone("Ocean", (x, y, z, region) ->
-                                TeraMath.floorToInt(region.getFacet(ElevationFacet.class).getWorld(x, z)) < y && y <= seaLevel)
+                                (int) Math.floor(region.getFacet(ElevationFacet.class).getWorld(x, z)) < y && y <= seaLevel)
                                 .addRasterizer(new WorldRasterizer() {
                                     private Block water;
 
@@ -106,7 +105,7 @@ public class ZonedPerlinWorldGenerator extends BaseFacetedWorldGenerator {
 
                                     @Override
                                     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
-                                        for (Vector3i pos : ChunkConstants.CHUNK_REGION) {
+                                        for (Vector3ic pos : Chunks.CHUNK_REGION) {
                                             chunk.setBlock(pos, water);
                                         }
                                     }
@@ -131,7 +130,7 @@ public class ZonedPerlinWorldGenerator extends BaseFacetedWorldGenerator {
 
                         //A zone controlling the mountains
                         .addZone(new Zone("Mountains", (x, y, z, region) -> y >= MountainSurfaceProvider.MIN_MOUNTAIN_HEIGHT
-                                && TeraMath.floorToInt(region.getFacet(ElevationFacet.class).getWorld(x, z)) == y)
+                                && (int) Math.floor(region.getFacet(ElevationFacet.class).getWorld(x, z)) == y)
                                 .addProvider(new MountainSurfaceProvider())
                                 .addZone(new Zone("Mountain top", new LayeredZoneRegionFunction(new ConstantLayerThickness(1), GROUND))
                                         .addRasterizer(new SingleBlockRasterizer("CoreAssets:Snow"))))
