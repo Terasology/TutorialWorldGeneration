@@ -15,17 +15,17 @@
  */
 package org.terasology.tutorialWorldGeneration;
 
-import org.terasology.math.ChunkMath;
-import org.terasology.math.JomlUtil;
+import org.joml.Vector3ic;
 import org.terasology.math.geom.Vector3i;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.chunks.CoreChunk;
-import org.terasology.world.generation.Region;
-import org.terasology.world.generation.WorldRasterizer;
-import org.terasology.world.generation.facets.ElevationFacet;
-import org.terasology.world.generation.facets.SurfacesFacet;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.chunks.Chunks;
+import org.terasology.engine.world.chunks.CoreChunk;
+import org.terasology.engine.world.generation.Region;
+import org.terasology.engine.world.generation.WorldRasterizer;
+import org.terasology.engine.world.generation.facets.ElevationFacet;
+import org.terasology.engine.world.generation.facets.SurfacesFacet;
 
 public class TutorialWorldRasterizer implements WorldRasterizer {
 
@@ -42,12 +42,12 @@ public class TutorialWorldRasterizer implements WorldRasterizer {
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
         SurfacesFacet surfacesFacet = chunkRegion.getFacet(SurfacesFacet.class);
-        for (Vector3i position : chunkRegion.getRegion()) {
-            float surfaceHeight = elevationFacet.getWorld(position.x, position.z);
-            if (surfacesFacet.getWorld(JomlUtil.from(position))) {
-                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), grass);
-            } else if (position.y < surfaceHeight) {
-                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), dirt);
+        for (Vector3ic position : chunkRegion.getRegion()) {
+            float surfaceHeight = elevationFacet.getWorld(position.x(), position.z());
+            if (surfacesFacet.getWorld(position)){
+                chunk.setBlock(Chunks.toRelative((org.joml.Vector3i) position), grass);
+            } else if (position.y() < surfaceHeight) {
+                chunk.setBlock(Chunks.toRelative((org.joml.Vector3i) position), dirt);
             }
         }
     }

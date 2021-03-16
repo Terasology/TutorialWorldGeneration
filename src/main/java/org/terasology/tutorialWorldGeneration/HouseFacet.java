@@ -16,8 +16,8 @@
 package org.terasology.tutorialWorldGeneration;
 
 import org.terasology.math.Region3i;
-import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.facets.base.SparseObjectFacet3D;
+import org.terasology.engine.world.generation.Border3D;
+import org.terasology.engine.world.generation.facets.base.SparseObjectFacet3D;
 
 /**
  * Stores where the center of a house will be placed

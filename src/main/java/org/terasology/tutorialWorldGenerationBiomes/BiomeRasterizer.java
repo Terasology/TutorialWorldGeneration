@@ -15,16 +15,16 @@
  */
 package org.terasology.tutorialWorldGenerationBiomes;
 
+import org.joml.Vector3ic;
 import org.terasology.biomesAPI.BiomeRegistry;
-import org.terasology.math.geom.Vector3i;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.world.chunks.CoreChunk;
-import org.terasology.world.generation.Facet;
-import org.terasology.world.generation.Region;
-import org.terasology.world.generation.Requires;
-import org.terasology.world.generation.WorldRasterizer;
-import org.terasology.world.generation.facets.ElevationFacet;
-import org.terasology.world.generation.facets.SeaLevelFacet;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.world.chunks.CoreChunk;
+import org.terasology.engine.world.generation.Facet;
+import org.terasology.engine.world.generation.Region;
+import org.terasology.engine.world.generation.Requires;
+import org.terasology.engine.world.generation.WorldRasterizer;
+import org.terasology.engine.world.generation.facets.ElevationFacet;
+import org.terasology.engine.world.generation.facets.SeaLevelFacet;
 
 @Requires({@Facet(SeaLevelFacet.class), @Facet(ElevationFacet.class)})
 public class BiomeRasterizer implements WorldRasterizer {
@@ -39,13 +39,12 @@ public class BiomeRasterizer implements WorldRasterizer {
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
         SeaLevelFacet seaLevelFacet = chunkRegion.getFacet(SeaLevelFacet.class);
-        for (Vector3i position : chunkRegion.getRegion()) {
-            if (position.y > Math.max(seaLevelFacet.getSeaLevel(), elevationFacet.getWorld(position.x, position.z)) + 10) {
+        for (Vector3ic position : chunkRegion.getRegion()) {
+            if (position.y() > Math.max(seaLevelFacet.getSeaLevel(), elevationFacet.getWorld(position.x(), position.z())) + 10) {
                 biomeRegistry.setBiome(TutorialBiome.SKY, position);
-            } else if (elevationFacet.getWorld(position.x, position.z) + 1 > seaLevelFacet.getSeaLevel()) {
+            } else if (elevationFacet.getWorld(position.x(), position.z()) + 1 > seaLevelFacet.getSeaLevel()) {
                 biomeRegistry.setBiome(TutorialBiome.LAND, position);
-            }
-            else {
+            } else {
                 biomeRegistry.setBiome(TutorialBiome.WATER, position);
             }
         }

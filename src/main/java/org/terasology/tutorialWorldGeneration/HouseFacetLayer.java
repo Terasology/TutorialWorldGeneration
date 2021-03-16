@@ -8,9 +8,9 @@ import java.util.Map.Entry;
 import org.terasology.math.geom.BaseVector3i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2i;
-import org.terasology.world.generation.Region;
-import org.terasology.world.viewer.layers.AbstractFacetLayer;
-import org.terasology.world.viewer.layers.Renders;
+import org.terasology.engine.world.generation.Region;
+import org.terasology.engine.world.viewer.layers.AbstractFacetLayer;
+import org.terasology.engine.world.viewer.layers.Renders;
 
 @Renders(value = HouseFacet.class, order = 5000)
 public class HouseFacetLayer extends AbstractFacetLayer {

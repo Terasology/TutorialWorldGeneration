@@ -15,14 +15,15 @@
  */
 package org.terasology.tutorialWorldGeneration;
 
+import org.joml.Vector2ic;
 import org.terasology.math.geom.BaseVector2i;
-import org.terasology.world.generation.Facet;
-import org.terasology.world.generation.FacetProvider;
-import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Produces;
-import org.terasology.world.generation.Requires;
-import org.terasology.world.generation.facets.ElevationFacet;
-import org.terasology.world.generation.facets.SurfacesFacet;
+import org.terasology.engine.world.generation.Facet;
+import org.terasology.engine.world.generation.FacetProvider;
+import org.terasology.engine.world.generation.GeneratingRegion;
+import org.terasology.engine.world.generation.Produces;
+import org.terasology.engine.world.generation.Requires;
+import org.terasology.engine.world.generation.facets.ElevationFacet;
+import org.terasology.engine.world.generation.facets.SurfacesFacet;
 
 /**
  * Copies the data from the ElevationFacet into the SurfacesFacet
@@ -42,7 +43,7 @@ public class SurfacesProvider implements FacetProvider {
         SurfacesFacet surfacesFacet = new SurfacesFacet(region.getRegion(), region.getBorderForFacet(SurfacesFacet.class));
 
         for (BaseVector2i pos : elevation.getWorldRegion().contents()) {
-            int height = (int) Math.ceil(elevation.getWorld(pos)) - 1;
+            int height = (int) Math.ceil(elevation.getWorld((Vector2ic) pos)) - 1;
             if (height >= surfacesFacet.getWorldRegion().minY() && height <= surfacesFacet.getWorldRegion().maxY()) {
                 surfacesFacet.setWorld(pos.x(), height, pos.y(), true);
             }

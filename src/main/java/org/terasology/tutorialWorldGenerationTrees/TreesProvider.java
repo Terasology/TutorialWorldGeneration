@@ -15,16 +15,16 @@
  */
 package org.terasology.tutorialWorldGenerationTrees;
 
-import org.terasology.math.Region3i;
-import org.terasology.utilities.procedural.Noise;
-import org.terasology.utilities.procedural.WhiteNoise;
-import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.Facet;
-import org.terasology.world.generation.FacetProviderPlugin;
-import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Produces;
-import org.terasology.world.generation.Requires;
-import org.terasology.world.generation.facets.SurfacesFacet;
+import org.terasology.engine.world.block.BlockRegion;
+import org.terasology.engine.utilities.procedural.Noise;
+import org.terasology.engine.utilities.procedural.WhiteNoise;
+import org.terasology.engine.world.generation.Border3D;
+import org.terasology.engine.world.generation.Facet;
+import org.terasology.engine.world.generation.FacetProviderPlugin;
+import org.terasology.engine.world.generation.GeneratingRegion;
+import org.terasology.engine.world.generation.Produces;
+import org.terasology.engine.world.generation.Requires;
+import org.terasology.engine.world.generation.facets.SurfacesFacet;
 
 /**
  * Class for placing trees, using WhiteNoise.
@@ -45,7 +45,7 @@ public class TreesProvider implements FacetProviderPlugin {
         TreesFacet facet = new TreesFacet(region.getRegion(), border);
 
         SurfacesFacet surfacesFacet = region.getRegionFacet(SurfacesFacet.class);
-        Region3i worldRegion = surfacesFacet.getWorldRegion();
+        BlockRegion worldRegion = surfacesFacet.getWorldRegion();
 
         for (int wz = worldRegion.minZ(); wz <= worldRegion.maxZ(); wz++) {
             for (int wx = worldRegion.minX(); wx <= worldRegion.maxX(); wx++) {
