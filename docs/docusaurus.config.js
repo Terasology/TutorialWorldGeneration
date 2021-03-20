@@ -2,12 +2,12 @@
 module.exports = {
   title: 'World Generation Tutorial',
   tagline: 'A tutorial on world generation in Terasology',
-  url: 'https://skaldarnar.github.io',
+  url: 'https://terasology.github.io',
   baseUrl: '/TutorialWorldGeneration/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'skaldarnar', // Usually your GitHub org/user name.
+  organizationName: 'Terasology', // Usually your GitHub org/user name.
   projectName: 'TutorialWorldGeneration', // Usually your repo name.
   themeConfig: {
     navbar: {
