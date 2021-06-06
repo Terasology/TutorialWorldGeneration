@@ -21,13 +21,12 @@ import org.joml.Vector3ic;
 import org.terasology.core.world.generator.facetProviders.BiomeProvider;
 import org.terasology.core.world.generator.facetProviders.DefaultFloraProvider;
 import org.terasology.core.world.generator.facetProviders.DefaultTreeProvider;
-import org.terasology.core.world.generator.facetProviders.PerlinBaseSurfaceProvider;
-import org.terasology.core.world.generator.facetProviders.PerlinHillsAndMountainsProvider;
-import org.terasology.core.world.generator.facetProviders.PerlinHumidityProvider;
-import org.terasology.core.world.generator.facetProviders.PerlinOceanProvider;
-import org.terasology.core.world.generator.facetProviders.PerlinRiverProvider;
-import org.terasology.core.world.generator.facetProviders.PerlinSurfaceTemperatureProvider;
-import org.terasology.core.world.generator.facetProviders.PlateauProvider;
+import org.terasology.core.world.generator.facetProviders.SimplexBaseSurfaceProvider;
+import org.terasology.core.world.generator.facetProviders.SimplexHumidityProvider;
+import org.terasology.core.world.generator.facetProviders.SimplexRiverProvider;
+import org.terasology.core.world.generator.facetProviders.SimplexRoughnessProvider;
+import org.terasology.core.world.generator.facetProviders.SimplexSurfaceTemperatureProvider;
+import org.terasology.core.world.generator.facetProviders.SpawnPlateauProvider;
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
 import org.terasology.core.world.generator.facetProviders.SurfaceToDensityProvider;
 import org.terasology.core.world.generator.rasterizers.FloraRasterizer;
@@ -57,15 +56,15 @@ import static org.terasology.engine.world.zones.LayeredZoneRegionFunction.Layere
 import static org.terasology.engine.world.zones.LayeredZoneRegionFunction.LayeredZoneOrdering.GROUND;
 import static org.terasology.engine.world.zones.LayeredZoneRegionFunction.LayeredZoneOrdering.SHALLOW_UNDERGROUND;
 
-@RegisterWorldGenerator(id = "zonedperlin", displayName = "ZonedPerlin", description = "Perlin world generator using zones")
-public class ZonedPerlinWorldGenerator extends BaseFacetedWorldGenerator {
+@RegisterWorldGenerator(id = "zonedsimplex", displayName = "ZonedSimplex", description = "Simplex world generator using zones")
+public class ZonedSimplexWorldGenerator extends BaseFacetedWorldGenerator {
 
     private final FixedSpawner spawner = new FixedSpawner(0, 0);
 
     @In
     private WorldGeneratorPluginLibrary worldGeneratorPluginLibrary;
 
-    public ZonedPerlinWorldGenerator(SimpleUri uri) {
+    public ZonedSimplexWorldGenerator(SimpleUri uri) {
         super(uri);
     }
 
@@ -82,8 +81,8 @@ public class ZonedPerlinWorldGenerator extends BaseFacetedWorldGenerator {
         return new WorldBuilder(worldGeneratorPluginLibrary)
                 .setSeaLevel(seaLevel)
                 .addProvider(new SeaLevelProvider(seaLevel))
-                .addProvider(new PerlinHumidityProvider())
-                .addProvider(new PerlinSurfaceTemperatureProvider())
+                .addProvider(new SimplexHumidityProvider())
+                .addProvider(new SimplexSurfaceTemperatureProvider())
 
                 //The surface layer, containing things that sit on top of the ground
                 .addZone(new Zone("Surface", new LayeredZoneRegionFunction(new ConstantLayerThickness(10), ABOVE_GROUND))
@@ -95,31 +94,16 @@ public class ZonedPerlinWorldGenerator extends BaseFacetedWorldGenerator {
                         //A zone for the ocean, existing in between the ground height and sea level
                         .addZone(new Zone("Ocean", (x, y, z, region) ->
                                 (int) Math.floor(region.getFacet(ElevationFacet.class).getWorld(x, z)) < y && y <= seaLevel)
-                                .addRasterizer(new WorldRasterizer() {
-                                    private Block water;
-
-                                    @Override
-                                    public void initialize() {
-                                        water = CoreRegistry.get(BlockManager.class).getBlock("CoreAssets:water");
-                                    }
-
-                                    @Override
-                                    public void generateChunk(Chunk chunk, Region chunkRegion) {
-                                        for (Vector3ic pos : Chunks.CHUNK_REGION) {
-                                            chunk.setBlock(pos, water);
-                                        }
-                                    }
-                                })))
+                                .addRasterizer(new SingleBlockRasterizer("CoreAssets:water"))))
 
                 //The layer for the ground
                 .addZone(new Zone("Ground", new LayeredZoneRegionFunction(new ConstantLayerThickness(10), GROUND))
-                        .addProvider(new PerlinBaseSurfaceProvider())
-                        .addProvider(new PerlinRiverProvider())
-                        .addProvider(new PerlinOceanProvider())
-                        .addProvider(new PerlinHillsAndMountainsProvider())
+                        .addProvider(new SimplexBaseSurfaceProvider())
+                        .addProvider(new SimplexRiverProvider())
+                        .addProvider(new SimplexRoughnessProvider())
                         .addProvider(new BiomeProvider())
                         .addProvider(new SurfaceToDensityProvider())
-                        .addProvider(new PlateauProvider(spawnPos, seaLevel + 4, 10, 30))
+                        .addProvider(new SpawnPlateauProvider(spawnPos))
 
                         //The default zone for areas which aren't part of the other zones
                         .addZone(new Zone("Default", () -> true)
@@ -143,7 +127,6 @@ public class ZonedPerlinWorldGenerator extends BaseFacetedWorldGenerator {
                 //The underground layer, which just fills the underground with stone
                 .addZone(new Zone("Underground", new LayeredZoneRegionFunction(new ConstantLayerThickness(1000), SHALLOW_UNDERGROUND))
                         .addRasterizer(new SingleBlockRasterizer("CoreAssets:Stone")))
-
                 .addPlugins();
     }
 }
