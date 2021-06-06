@@ -22,7 +22,7 @@ import org.terasology.engine.world.block.Block;
 import org.terasology.engine.world.block.BlockManager;
 import org.terasology.engine.world.block.BlockRegion;
 import org.terasology.engine.world.chunks.Chunks;
-import org.terasology.engine.world.chunks.CoreChunk;
+import org.terasology.engine.world.chunks.Chunk;
 import org.terasology.engine.world.generation.Region;
 import org.terasology.engine.world.generation.WorldRasterizer;
 import org.terasology.math.geom.BaseVector3i;
@@ -38,7 +38,7 @@ public class HouseRasterizer implements WorldRasterizer {
     }
 
     @Override
-    public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+    public void generateChunk(Chunk chunk, Region chunkRegion) {
         HouseFacet houseFacet = chunkRegion.getFacet(HouseFacet.class);
 
         for (Entry<Vector3ic, House> entry : houseFacet.getWorldEntries().entrySet()) {
@@ -47,14 +47,15 @@ public class HouseRasterizer implements WorldRasterizer {
             Vector3i centerHousePosition = new Vector3i(entry.getKey());
             int extent = entry.getValue().getExtent();
             centerHousePosition.add(0, extent, 0);
-            BlockRegion walls = BlockRegion.createFromCenterExtents(centerHousePosition, extent);
-            BlockRegion inside = BlockRegion.createFromCenterExtents(centerHousePosition, extent - 1);
+            BlockRegion walls = new BlockRegion(centerHousePosition);
+            BlockRegion inside = new BlockRegion(walls).expand(extent - 1, extent - 1, extent - 1);
+            walls.expand(extent, extent, extent);
 
             // loop through each of the positions in the cube, ignoring the is
             for (Vector3ic newBlockPosition : walls) {
                 if (chunkRegion.getRegion().contains(newBlockPosition)
                         && !inside.contains(newBlockPosition)) {
-                    chunk.setBlock(Chunks.toRelative(newBlockPosition), stone);
+                    chunk.setBlock(Chunks.toRelative(new Vector3i(newBlockPosition)), stone);
                 }
             }
         }

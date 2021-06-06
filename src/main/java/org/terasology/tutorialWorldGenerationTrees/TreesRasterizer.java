@@ -22,7 +22,7 @@ import org.terasology.engine.world.block.Block;
 import org.terasology.engine.world.block.BlockManager;
 import org.terasology.engine.world.block.BlockRegion;
 import org.terasology.engine.world.chunks.Chunks;
-import org.terasology.engine.world.chunks.CoreChunk;
+import org.terasology.engine.world.chunks.Chunk;
 import org.terasology.engine.world.generation.Region;
 import org.terasology.engine.world.generation.WorldRasterizerPlugin;
 import org.terasology.engine.world.generation.facets.SeaLevelFacet;
@@ -44,7 +44,7 @@ public class TreesRasterizer implements WorldRasterizerPlugin {
     }
 
     @Override
-    public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+    public void generateChunk(Chunk chunk, Region chunkRegion) {
         TreesFacet facet = chunkRegion.getFacet(TreesFacet.class);
 
         SeaLevelFacet seaLevelFacet = chunkRegion.getFacet(SeaLevelFacet.class);
@@ -70,24 +70,25 @@ public class TreesRasterizer implements WorldRasterizerPlugin {
             Vector3i treeMinimumPos = new Vector3i(treePosition).sub(radius, 0, radius);
 
             // creates regions for different parts of a tree
-            BlockRegion treeRegion = BlockRegion.createFromMinAndSize(treeMinimumPos, new Vector3i(width, height, width));
-            BlockRegion treeTrunk = BlockRegion.createFromMinAndSize(treePosition, new Vector3i(1, trunkHeight, 1));
-            BlockRegion treeCrown = BlockRegion.createFromMinAndSize(new Vector3i(treeMinimumPos).add(0, (trunkHeight - 1), 0),
-                    new Vector3i(width, crownHeight, width));
-            BlockRegion treeTop = BlockRegion.createFromMinAndSize(
-                    new Vector3i(treeMinimumPos).add((width - topCrownWidth) / 2, trunkHeight + crownHeight - 1,
-                            (width - topCrownWidth) / 2),
-                    new Vector3i(topCrownWidth, topCrownHeight, topCrownWidth));
+            Vector3i treeMaximumPos = new Vector3i(treeMinimumPos).add(width, height, width);
+            BlockRegion treeRegion = new BlockRegion(treeMinimumPos, treeMaximumPos);
+
+            BlockRegion treeTrunk = new BlockRegion(treePosition, new Vector3i(treePosition).add(1, trunkHeight, 1));
+            Vector3i treeCrownMin = new Vector3i(treeMinimumPos).add(0, (trunkHeight - 1), 0);
+            BlockRegion treeCrown = new BlockRegion(treeCrownMin, new Vector3i(treeCrownMin).add(width, crownHeight, width));
+            Vector3i treeTopMin = new Vector3i(treeMinimumPos).add((width - topCrownWidth) / 2, trunkHeight + crownHeight - 1,
+                    (width - topCrownWidth) / 2);
+            BlockRegion treeTop = new BlockRegion(treeTopMin, new Vector3i(treeTopMin).add(topCrownWidth, topCrownHeight, topCrownWidth));
 
             // loop through each of the positions in the created regions and placing blocks
             for (Vector3ic newBlockPosition : treeRegion) {
                 if (chunkRegion.getRegion().contains(newBlockPosition)) {
                     if (treeTrunk.contains(newBlockPosition)) {
-                        chunk.setBlock(Chunks.toRelative(newBlockPosition), trunk);
+                        chunk.setBlock(Chunks.toRelative(new Vector3i(newBlockPosition)), trunk);
                     } else if (!treeTrunk.contains(newBlockPosition)) {
 
                         if (treeCrown.contains(newBlockPosition) || treeTop.contains(newBlockPosition)) {
-                            chunk.setBlock(Chunks.toRelative(newBlockPosition), leaf);
+                            chunk.setBlock(Chunks.toRelative(new Vector3i(newBlockPosition)), leaf);
                         }
                     }
                 }

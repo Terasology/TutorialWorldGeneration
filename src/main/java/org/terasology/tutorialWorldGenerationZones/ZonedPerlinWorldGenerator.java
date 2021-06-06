@@ -40,7 +40,7 @@ import org.terasology.engine.registry.In;
 import org.terasology.engine.world.block.Block;
 import org.terasology.engine.world.block.BlockManager;
 import org.terasology.engine.world.chunks.Chunks;
-import org.terasology.engine.world.chunks.CoreChunk;
+import org.terasology.engine.world.chunks.Chunk;
 import org.terasology.engine.world.generation.BaseFacetedWorldGenerator;
 import org.terasology.engine.world.generation.Region;
 import org.terasology.engine.world.generation.WorldBuilder;
@@ -104,7 +104,7 @@ public class ZonedPerlinWorldGenerator extends BaseFacetedWorldGenerator {
                                     }
 
                                     @Override
-                                    public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+                                    public void generateChunk(Chunk chunk, Region chunkRegion) {
                                         for (Vector3ic pos : Chunks.CHUNK_REGION) {
                                             chunk.setBlock(pos, water);
                                         }

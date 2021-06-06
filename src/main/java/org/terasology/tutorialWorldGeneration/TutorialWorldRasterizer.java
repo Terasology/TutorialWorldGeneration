@@ -21,7 +21,7 @@ import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.world.block.Block;
 import org.terasology.engine.world.block.BlockManager;
 import org.terasology.engine.world.chunks.Chunks;
-import org.terasology.engine.world.chunks.CoreChunk;
+import org.terasology.engine.world.chunks.Chunk;
 import org.terasology.engine.world.generation.Region;
 import org.terasology.engine.world.generation.WorldRasterizer;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
@@ -39,15 +39,15 @@ public class TutorialWorldRasterizer implements WorldRasterizer {
     }
 
     @Override
-    public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+    public void generateChunk(Chunk chunk, Region chunkRegion) {
         ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
         SurfacesFacet surfacesFacet = chunkRegion.getFacet(SurfacesFacet.class);
         for (Vector3ic position : chunkRegion.getRegion()) {
             float surfaceHeight = elevationFacet.getWorld(position.x(), position.z());
             if (surfacesFacet.getWorld(position)) {
-                chunk.setBlock(Chunks.toRelative(position), grass);
+                chunk.setBlock(Chunks.toRelative(new Vector3i(position)), grass);
             } else if (position.y() < surfaceHeight) {
-                chunk.setBlock(Chunks.toRelative(position), dirt);
+                chunk.setBlock(Chunks.toRelative(new Vector3i(position)), dirt);
             }
         }
     }

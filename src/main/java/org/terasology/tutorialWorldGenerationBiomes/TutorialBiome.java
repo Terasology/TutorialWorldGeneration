@@ -16,7 +16,7 @@
 package org.terasology.tutorialWorldGenerationBiomes;
 
 import org.terasology.biomesAPI.Biome;
-import org.terasology.naming.Name;
+import org.terasology.gestalt.naming.Name;
 
 public enum TutorialBiome implements Biome {
     LAND("Land"),

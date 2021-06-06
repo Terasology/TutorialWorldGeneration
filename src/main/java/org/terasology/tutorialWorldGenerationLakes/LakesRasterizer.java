@@ -15,12 +15,13 @@
  */
 package org.terasology.tutorialWorldGenerationLakes;
 
+import org.joml.Vector3i;
 import org.joml.Vector3ic;
 import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.world.block.Block;
 import org.terasology.engine.world.block.BlockManager;
 import org.terasology.engine.world.chunks.Chunks;
-import org.terasology.engine.world.chunks.CoreChunk;
+import org.terasology.engine.world.chunks.Chunk;
 import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.Region;
 import org.terasology.engine.world.generation.Requires;
@@ -40,7 +41,7 @@ public class LakesRasterizer implements WorldRasterizerPlugin {
     }
 
     @Override
-    public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+    public void generateChunk(Chunk chunk, Region chunkRegion) {
         ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
         SeaLevelFacet seaLevelFacet = chunkRegion.getFacet(SeaLevelFacet.class);
         int seaLevel = seaLevelFacet.getSeaLevel();
@@ -48,7 +49,7 @@ public class LakesRasterizer implements WorldRasterizerPlugin {
             float surfaceHeight = elevationFacet.getWorld(position.x(), position.z());
             // check to see if the surface is under the sea level and if we are dealing with something above the surface
             if (position.y() < seaLevel && position.y() > surfaceHeight) {
-                chunk.setBlock(Chunks.toRelative(position), water);
+                chunk.setBlock(Chunks.toRelative(new Vector3i(position)), water);
             }
         }
     }

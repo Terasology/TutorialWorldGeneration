@@ -18,7 +18,7 @@ package org.terasology.tutorialWorldGenerationBiomes;
 import org.joml.Vector3ic;
 import org.terasology.biomesAPI.BiomeRegistry;
 import org.terasology.engine.registry.CoreRegistry;
-import org.terasology.engine.world.chunks.CoreChunk;
+import org.terasology.engine.world.chunks.Chunk;
 import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.Region;
 import org.terasology.engine.world.generation.Requires;
@@ -36,7 +36,7 @@ public class BiomeRasterizer implements WorldRasterizer {
     }
 
     @Override
-    public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+    public void generateChunk(Chunk chunk, Region chunkRegion) {
         ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
         SeaLevelFacet seaLevelFacet = chunkRegion.getFacet(SeaLevelFacet.class);
         for (Vector3ic position : chunkRegion.getRegion()) {
