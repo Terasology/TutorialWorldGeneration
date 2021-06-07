@@ -47,15 +47,16 @@ public class HouseRasterizer implements WorldRasterizer {
             Vector3i centerHousePosition = new Vector3i(entry.getKey());
             int extent = entry.getValue().getExtent();
             centerHousePosition.add(0, extent, 0);
-            BlockRegion walls = new BlockRegion(centerHousePosition);
-            BlockRegion inside = new BlockRegion(walls).expand(extent - 1, extent - 1, extent - 1);
-            walls.expand(extent, extent, extent);
+            BlockRegion walls = new BlockRegion(centerHousePosition).expand(extent, extent, extent);
+            BlockRegion inside = new BlockRegion(centerHousePosition).expand(extent - 1, extent - 1, extent - 1);
 
             // loop through each of the positions in the cube, ignoring the is
+            // reusing one mutable vector is more efficient than creating a new one for each toRelative()
+            Vector3i tmp = new Vector3i();
             for (Vector3ic newBlockPosition : walls) {
                 if (chunkRegion.getRegion().contains(newBlockPosition)
                         && !inside.contains(newBlockPosition)) {
-                    chunk.setBlock(Chunks.toRelative(new Vector3i(newBlockPosition)), stone);
+                    chunk.setBlock(Chunks.toRelative(newBlockPosition, tmp), stone);
                 }
             }
         }

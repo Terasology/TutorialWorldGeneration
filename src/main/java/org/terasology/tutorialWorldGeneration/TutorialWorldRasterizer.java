@@ -42,12 +42,15 @@ public class TutorialWorldRasterizer implements WorldRasterizer {
     public void generateChunk(Chunk chunk, Region chunkRegion) {
         ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
         SurfacesFacet surfacesFacet = chunkRegion.getFacet(SurfacesFacet.class);
+
+        // reusing one mutable vector is more efficient than creating a new one for each toRelative()
+        Vector3i tmp = new Vector3i();
         for (Vector3ic position : chunkRegion.getRegion()) {
             float surfaceHeight = elevationFacet.getWorld(position.x(), position.z());
             if (surfacesFacet.getWorld(position)) {
-                chunk.setBlock(Chunks.toRelative(new Vector3i(position)), grass);
+                chunk.setBlock(Chunks.toRelative(position, tmp), grass);
             } else if (position.y() < surfaceHeight) {
-                chunk.setBlock(Chunks.toRelative(new Vector3i(position)), dirt);
+                chunk.setBlock(Chunks.toRelative(position, tmp), dirt);
             }
         }
     }

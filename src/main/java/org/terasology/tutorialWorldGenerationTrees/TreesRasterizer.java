@@ -81,14 +81,15 @@ public class TreesRasterizer implements WorldRasterizerPlugin {
             BlockRegion treeTop = new BlockRegion(treeTopMin, new Vector3i(treeTopMin).add(topCrownWidth, topCrownHeight, topCrownWidth));
 
             // loop through each of the positions in the created regions and placing blocks
+            Vector3i tmp = new Vector3i();
             for (Vector3ic newBlockPosition : treeRegion) {
                 if (chunkRegion.getRegion().contains(newBlockPosition)) {
                     if (treeTrunk.contains(newBlockPosition)) {
-                        chunk.setBlock(Chunks.toRelative(new Vector3i(newBlockPosition)), trunk);
+                        chunk.setBlock(Chunks.toRelative(newBlockPosition, tmp), trunk);
                     } else if (!treeTrunk.contains(newBlockPosition)) {
 
                         if (treeCrown.contains(newBlockPosition) || treeTop.contains(newBlockPosition)) {
-                            chunk.setBlock(Chunks.toRelative(new Vector3i(newBlockPosition)), leaf);
+                            chunk.setBlock(Chunks.toRelative(newBlockPosition, tmp), leaf);
                         }
                     }
                 }

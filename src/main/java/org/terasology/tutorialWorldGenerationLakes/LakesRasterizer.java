@@ -45,11 +45,13 @@ public class LakesRasterizer implements WorldRasterizerPlugin {
         ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
         SeaLevelFacet seaLevelFacet = chunkRegion.getFacet(SeaLevelFacet.class);
         int seaLevel = seaLevelFacet.getSeaLevel();
+
+        Vector3i tmp = new Vector3i();
         for (Vector3ic position : chunkRegion.getRegion()) {
             float surfaceHeight = elevationFacet.getWorld(position.x(), position.z());
             // check to see if the surface is under the sea level and if we are dealing with something above the surface
             if (position.y() < seaLevel && position.y() > surfaceHeight) {
-                chunk.setBlock(Chunks.toRelative(new Vector3i(position)), water);
+                chunk.setBlock(Chunks.toRelative(position, tmp), water);
             }
         }
     }
