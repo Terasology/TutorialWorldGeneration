@@ -40,12 +40,12 @@ public class BiomeRasterizer implements WorldRasterizer {
         ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
         SeaLevelFacet seaLevelFacet = chunkRegion.getFacet(SeaLevelFacet.class);
         for (Vector3ic position : chunkRegion.getRegion()) {
-            if (position.y() > Math.max(seaLevelFacet.getSeaLevel(), elevationFacet.getWorld(position.x(), position.z())) + 10) {
+            if (position.y() > Math.max(seaLevelFacet.getSeaLevel(), elevationFacet.getWorld(position.x(),
+                    position.z())) + 10) {
                 biomeRegistry.setBiome(TutorialBiome.SKY, position);
             } else if (elevationFacet.getWorld(position.x(), position.z()) + 1 > seaLevelFacet.getSeaLevel()) {
                 biomeRegistry.setBiome(TutorialBiome.LAND, position);
-            }
-            else {
+            } else {
                 biomeRegistry.setBiome(TutorialBiome.WATER, position);
             }
         }

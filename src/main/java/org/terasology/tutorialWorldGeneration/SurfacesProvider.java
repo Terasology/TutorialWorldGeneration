@@ -39,7 +39,8 @@ public class SurfacesProvider implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {
         ElevationFacet elevation = region.getRegionFacet(ElevationFacet.class);
-        SurfacesFacet surfacesFacet = new SurfacesFacet(region.getRegion(), region.getBorderForFacet(SurfacesFacet.class));
+        SurfacesFacet surfacesFacet = new SurfacesFacet(region.getRegion(),
+                region.getBorderForFacet(SurfacesFacet.class));
 
         for (Vector2ic pos : elevation.getWorldArea()) {
             int height = (int) Math.ceil(elevation.getWorld(pos)) - 1;

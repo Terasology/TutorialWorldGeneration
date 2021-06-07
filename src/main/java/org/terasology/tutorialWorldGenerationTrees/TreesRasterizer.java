@@ -51,7 +51,7 @@ public class TreesRasterizer implements WorldRasterizerPlugin {
         int seaLevel = seaLevelFacet.getSeaLevel();
 
         for (Map.Entry<Vector3ic, Tree> entry : facet.getWorldEntries().entrySet()) {
-            Vector3i treePosition = new Vector3i(entry.getKey()).add(0,1,0);
+            Vector3i treePosition = new Vector3i(entry.getKey()).add(0, 1, 0);
 
             // checks if tree is underwater, if it is then skip - don't build
             if (treePosition.y < seaLevel) {
@@ -75,10 +75,13 @@ public class TreesRasterizer implements WorldRasterizerPlugin {
 
             BlockRegion treeTrunk = new BlockRegion(treePosition, new Vector3i(treePosition).add(1, trunkHeight, 1));
             Vector3i treeCrownMin = new Vector3i(treeMinimumPos).add(0, (trunkHeight - 1), 0);
-            BlockRegion treeCrown = new BlockRegion(treeCrownMin, new Vector3i(treeCrownMin).add(width, crownHeight, width));
-            Vector3i treeTopMin = new Vector3i(treeMinimumPos).add((width - topCrownWidth) / 2, trunkHeight + crownHeight - 1,
+            BlockRegion treeCrown = new BlockRegion(treeCrownMin, new Vector3i(treeCrownMin).add(width, crownHeight,
+                    width));
+            Vector3i treeTopMin = new Vector3i(treeMinimumPos).add((width - topCrownWidth) / 2,
+                    trunkHeight + crownHeight - 1,
                     (width - topCrownWidth) / 2);
-            BlockRegion treeTop = new BlockRegion(treeTopMin, new Vector3i(treeTopMin).add(topCrownWidth, topCrownHeight, topCrownWidth));
+            BlockRegion treeTop = new BlockRegion(treeTopMin, new Vector3i(treeTopMin).add(topCrownWidth,
+                    topCrownHeight, topCrownWidth));
 
             // loop through each of the positions in the created regions and placing blocks
             Vector3i tmp = new Vector3i();
@@ -87,7 +90,6 @@ public class TreesRasterizer implements WorldRasterizerPlugin {
                     if (treeTrunk.contains(newBlockPosition)) {
                         chunk.setBlock(Chunks.toRelative(newBlockPosition, tmp), trunk);
                     } else if (!treeTrunk.contains(newBlockPosition)) {
-
                         if (treeCrown.contains(newBlockPosition) || treeTop.contains(newBlockPosition)) {
                             chunk.setBlock(Chunks.toRelative(newBlockPosition, tmp), leaf);
                         }

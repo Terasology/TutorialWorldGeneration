@@ -46,7 +46,8 @@ public class MountainsProvider implements ConfigurableFacetProvider {
         final float zoomRatio = 0.01f;
         float mountainNoiseZoom = configuration.mountainNoiseZoomRatio * zoomRatio;
         // Default zoom is 0.001f. Max zoom is 0.01f
-        mountainNoise = new SubSampledNoise(new BrownianNoise(new PerlinNoise(seed + 2), 8), new Vector2f(mountainNoiseZoom, mountainNoiseZoom), 1);
+        mountainNoise = new SubSampledNoise(new BrownianNoise(new PerlinNoise(seed + 2), 8),
+                new Vector2f(mountainNoiseZoom, mountainNoiseZoom), 1);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class MountainsProvider implements ConfigurableFacetProvider {
         float mountainHeight = configuration.mountainHeight;
         // loop through every position on our 2d array
         BlockAreac processArea = facet.getWorldArea();
-        for ( Vector2ic position : processArea) {
+        for (Vector2ic position : processArea) {
             // scale our max mountain height to noise (between -1 and 1)
             float additiveMountainHeight = mountainNoise.noise(position.x(), position.y()) * mountainHeight;
             // dont bother subtracting mountain height,  that will allow unaffected regions

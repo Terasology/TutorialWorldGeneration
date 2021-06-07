@@ -56,7 +56,8 @@ import static org.terasology.engine.world.zones.LayeredZoneRegionFunction.Layere
 import static org.terasology.engine.world.zones.LayeredZoneRegionFunction.LayeredZoneOrdering.GROUND;
 import static org.terasology.engine.world.zones.LayeredZoneRegionFunction.LayeredZoneOrdering.SHALLOW_UNDERGROUND;
 
-@RegisterWorldGenerator(id = "zonedsimplex", displayName = "ZonedSimplex", description = "Simplex world generator using zones")
+@RegisterWorldGenerator(id = "zonedsimplex", displayName = "ZonedSimplex", description = "Simplex world generator " +
+        "using zones")
 public class ZonedSimplexWorldGenerator extends BaseFacetedWorldGenerator {
 
     private final FixedSpawner spawner = new FixedSpawner(0, 0);
@@ -85,7 +86,8 @@ public class ZonedSimplexWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new SimplexSurfaceTemperatureProvider())
 
                 //The surface layer, containing things that sit on top of the ground
-                .addZone(new Zone("Surface", new LayeredZoneRegionFunction(new ConstantLayerThickness(10), ABOVE_GROUND))
+                .addZone(new Zone("Surface", new LayeredZoneRegionFunction(new ConstantLayerThickness(10),
+                        ABOVE_GROUND))
                         .addProvider(new DefaultFloraProvider())
                         .addProvider(new DefaultTreeProvider())
                         .addRasterizer(new FloraRasterizer())
@@ -107,16 +109,21 @@ public class ZonedSimplexWorldGenerator extends BaseFacetedWorldGenerator {
 
                         //The default zone for areas which aren't part of the other zones
                         .addZone(new Zone("Default", () -> true)
-                                .addZone(new Zone("Grass top", new LayeredZoneRegionFunction(new ConstantLayerThickness(1), GROUND))
+                                .addZone(new Zone("Grass top",
+                                        new LayeredZoneRegionFunction(new ConstantLayerThickness(1), GROUND))
                                         .addRasterizer(new SingleBlockRasterizer("CoreAssets:grass")))
-                                .addZone(new Zone("Dirt", new LayeredZoneRegionFunction(new ConstantLayerThickness(20), SHALLOW_UNDERGROUND))
+                                .addZone(new Zone("Dirt",
+                                        new LayeredZoneRegionFunction(new ConstantLayerThickness(20),
+                                                SHALLOW_UNDERGROUND))
                                         .addRasterizer(new SingleBlockRasterizer("CoreAssets:dirt"))))
 
                         //A zone controlling the mountains
-                        .addZone(new Zone("Mountains", (x, y, z, region) -> y >= MountainSurfaceProvider.MIN_MOUNTAIN_HEIGHT
+                        .addZone(new Zone("Mountains",
+                                (x, y, z, region) -> y >= MountainSurfaceProvider.MIN_MOUNTAIN_HEIGHT
                                 && (int) Math.floor(region.getFacet(ElevationFacet.class).getWorld(x, z)) == y)
                                 .addProvider(new MountainSurfaceProvider())
-                                .addZone(new Zone("Mountain top", new LayeredZoneRegionFunction(new ConstantLayerThickness(1), GROUND))
+                                .addZone(new Zone("Mountain top",
+                                        new LayeredZoneRegionFunction(new ConstantLayerThickness(1), GROUND))
                                         .addRasterizer(new SingleBlockRasterizer("CoreAssets:Snow"))))
 
                         //A zone controlling the beaches
@@ -125,7 +132,8 @@ public class ZonedSimplexWorldGenerator extends BaseFacetedWorldGenerator {
                                 .addRasterizer(new SingleBlockRasterizer("CoreAssets:Sand"))))
 
                 //The underground layer, which just fills the underground with stone
-                .addZone(new Zone("Underground", new LayeredZoneRegionFunction(new ConstantLayerThickness(1000), SHALLOW_UNDERGROUND))
+                .addZone(new Zone("Underground", new LayeredZoneRegionFunction(new ConstantLayerThickness(1000),
+                        SHALLOW_UNDERGROUND))
                         .addRasterizer(new SingleBlockRasterizer("CoreAssets:Stone")))
                 .addPlugins();
     }
