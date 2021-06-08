@@ -15,21 +15,23 @@
  */
 package org.terasology.tutorialWorldGeneration;
 
-import org.terasology.entitySystem.Component;
-import org.terasology.math.TeraMath;
-import org.terasology.math.geom.BaseVector2i;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2f;
+import org.joml.Vector2f;
+import org.joml.Vector2ic;
+import org.terasology.engine.entitySystem.Component;
+import org.terasology.engine.utilities.procedural.BrownianNoise;
+import org.terasology.engine.utilities.procedural.Noise;
+import org.terasology.engine.utilities.procedural.PerlinNoise;
+import org.terasology.engine.utilities.procedural.SubSampledNoise;
+import org.terasology.engine.world.block.BlockArea;
+import org.terasology.engine.world.block.BlockAreac;
+import org.terasology.engine.world.generation.ConfigurableFacetProvider;
+import org.terasology.engine.world.generation.Facet;
+import org.terasology.engine.world.generation.GeneratingRegion;
+import org.terasology.engine.world.generation.Updates;
+import org.terasology.engine.world.generation.facets.ElevationFacet;
 import org.terasology.nui.properties.Range;
-import org.terasology.utilities.procedural.BrownianNoise;
-import org.terasology.utilities.procedural.Noise;
-import org.terasology.utilities.procedural.PerlinNoise;
-import org.terasology.utilities.procedural.SubSampledNoise;
-import org.terasology.world.generation.ConfigurableFacetProvider;
-import org.terasology.world.generation.Facet;
-import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Updates;
-import org.terasology.world.generation.facets.ElevationFacet;
+
+import static org.joml.Math.clamp;
 
 @Updates(@Facet(ElevationFacet.class))
 public class MountainsProvider implements ConfigurableFacetProvider {
@@ -44,7 +46,8 @@ public class MountainsProvider implements ConfigurableFacetProvider {
         final float zoomRatio = 0.01f;
         float mountainNoiseZoom = configuration.mountainNoiseZoomRatio * zoomRatio;
         // Default zoom is 0.001f. Max zoom is 0.01f
-        mountainNoise = new SubSampledNoise(new BrownianNoise(new PerlinNoise(seed + 2), 8), new Vector2f(mountainNoiseZoom, mountainNoiseZoom), 1);
+        mountainNoise = new SubSampledNoise(new BrownianNoise(new PerlinNoise(seed + 2), 8),
+                new Vector2f(mountainNoiseZoom, mountainNoiseZoom), 1);
     }
 
     @Override
@@ -52,12 +55,12 @@ public class MountainsProvider implements ConfigurableFacetProvider {
         ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
         float mountainHeight = configuration.mountainHeight;
         // loop through every position on our 2d array
-        Rect2i processRegion = facet.getWorldRegion();
-        for (BaseVector2i position : processRegion.contents()) {
+        BlockAreac processArea = facet.getWorldArea();
+        for (Vector2ic position : processArea) {
             // scale our max mountain height to noise (between -1 and 1)
             float additiveMountainHeight = mountainNoise.noise(position.x(), position.y()) * mountainHeight;
             // dont bother subtracting mountain height,  that will allow unaffected regions
-            additiveMountainHeight = TeraMath.clamp(additiveMountainHeight, 0, mountainHeight);
+            additiveMountainHeight = clamp(additiveMountainHeight, 0, mountainHeight);
 
             facet.setWorld(position, facet.getWorld(position) + additiveMountainHeight);
         }

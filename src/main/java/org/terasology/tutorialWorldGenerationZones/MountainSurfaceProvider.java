@@ -15,16 +15,16 @@
  */
 package org.terasology.tutorialWorldGenerationZones;
 
-import org.terasology.math.geom.BaseVector2i;
-import org.terasology.math.geom.Vector2f;
-import org.terasology.utilities.procedural.Noise;
-import org.terasology.utilities.procedural.SimplexNoise;
-import org.terasology.utilities.procedural.SubSampledNoise;
-import org.terasology.world.generation.Facet;
-import org.terasology.world.generation.FacetProvider;
-import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Updates;
-import org.terasology.world.generation.facets.ElevationFacet;
+import org.joml.Vector2f;
+import org.joml.Vector2ic;
+import org.terasology.engine.utilities.procedural.Noise;
+import org.terasology.engine.utilities.procedural.SimplexNoise;
+import org.terasology.engine.utilities.procedural.SubSampledNoise;
+import org.terasology.engine.world.generation.Facet;
+import org.terasology.engine.world.generation.FacetProvider;
+import org.terasology.engine.world.generation.GeneratingRegion;
+import org.terasology.engine.world.generation.Updates;
+import org.terasology.engine.world.generation.facets.ElevationFacet;
 
 @Updates(@Facet(ElevationFacet.class))
 public class MountainSurfaceProvider implements FacetProvider {
@@ -41,7 +41,7 @@ public class MountainSurfaceProvider implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {
         ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
-        for (BaseVector2i pos : facet.getWorldRegion().contents()) {
+        for (Vector2ic pos : facet.getWorldArea()) {
             float height = facet.getWorld(pos);
             if (height >= MIN_MOUNTAIN_HEIGHT) {
                 float noiseValue = mountainNoise.noise(pos.x(), pos.y());

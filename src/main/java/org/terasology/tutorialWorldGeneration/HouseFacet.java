@@ -15,16 +15,16 @@
  */
 package org.terasology.tutorialWorldGeneration;
 
-import org.terasology.math.Region3i;
-import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.facets.base.SparseObjectFacet3D;
+import org.terasology.engine.world.block.BlockRegion;
+import org.terasology.engine.world.generation.Border3D;
+import org.terasology.engine.world.generation.facets.base.SparseObjectFacet3D;
 
 /**
  * Stores where the center of a house will be placed
  */
 public class HouseFacet extends SparseObjectFacet3D<House> {
 
-    public HouseFacet(Region3i targetRegion, Border3D border) {
+    public HouseFacet(BlockRegion targetRegion, Border3D border) {
         super(targetRegion, border);
     }
 }

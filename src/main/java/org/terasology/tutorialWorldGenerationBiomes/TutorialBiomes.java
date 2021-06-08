@@ -16,9 +16,9 @@
 package org.terasology.tutorialWorldGenerationBiomes;
 
 import org.terasology.biomesAPI.BiomeRegistry;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.registry.In;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.registry.In;
 
 @RegisterSystem
 public class TutorialBiomes extends BaseComponentSystem {
