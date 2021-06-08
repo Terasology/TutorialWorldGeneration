@@ -21,7 +21,7 @@ As the name suggests, these are base classes. Interfaces are also in that packag
 
 Easy when immortius has already created the plumbing!  
 
-Before we can actually set up the house facet, there's one other thing we need to add first. If we use the ```ElevationFacet``` to check how high to place each house, it restricts us to not having multiple houses one above another if the world generator produces overhanging terrain. In this case it can't, yet, but other [plugins](https://github.com/Terasology/TutorialWorldGeneration/wiki/Plugins) may change this, so it's best to be prepared just in case (and for consistency). The ```SurfacesFacet``` stores information on the detailed shape of the surface of the ground, potentially including multiple or 0 heights per column. In this case, we can just set it to initially contain the same data as the ```ElevationFacet```.
+Before we can actually set up the house facet, there's one other thing we need to add first. If we use the ```ElevationFacet``` to check how high to place each house, it restricts us to not having multiple houses one above another if the world generator produces overhanging terrain. In this case it can't, yet, but other [plugins](advanced/plugins.md) may change this, so it's best to be prepared just in case (and for consistency). The ```SurfacesFacet``` stores information on the detailed shape of the surface of the ground, potentially including multiple or 0 heights per column. In this case, we can just set it to initially contain the same data as the ```ElevationFacet```.
 
 ```java
 @Produces(SurfacesFacet.class)

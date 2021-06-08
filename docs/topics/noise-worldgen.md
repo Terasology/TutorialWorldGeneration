@@ -1,8 +1,8 @@
 # World Generation
 
-This page explains usages of different types of noise, basic mechanics and implementation. You can read detailed implementation in [Noise Implementation](Noise-Implementation) page. 
+This page explains usages of different types of noise, basic mechanics and implementation. You can read detailed implementation in [Noise Implementation](topics/noise-implementation.md) page. 
 
-This page also features some example terrains, covered in this tutorial (Rolling hills and Mountains) - [Noise Sampling](./../03_Noise-Sampling.md) and [Facet Modification](../04_Facet-Modification.md). 
+This page also features some example terrains, covered in this tutorial (Rolling hills and Mountains) - [Noise Sampling](tutorial/03_Noise-Sampling.md) and [Facet Modification](tutorial/04_Facet-Modification.md). 
 
 ### Simple Terrain - `SimplexNoise`
 
@@ -83,7 +83,7 @@ As you can see, we don't need `SubSampledNoise` because  we don't have to smooth
 
 This terrain works almost the same as houses, covered in this tutorial. This is only to show how White Noise can help to achieve natural vegetation.
 
-**Up till now you can see, there are a lot of parameters in `BrownianNoise` and `SubSampledNoise`. Those parameters are crucial to build up your world and to get desirable results. You may want to learn more about `BrownianNoise`, `SubsampledNoise` parameters, including octave and zooming noise map. Please head to the [Noise Implementation](./noise-implementation.md) page.**
+**Up till now you can see, there are a lot of parameters in `BrownianNoise` and `SubSampledNoise`. Those parameters are crucial to build up your world and to get desirable results. You may want to learn more about `BrownianNoise`, `SubsampledNoise` parameters, including octave and zooming noise map. Please head to the [Noise Implementation](topics/noise-implementation.md) page.**
 
 ## Summary - Which noise to use?
 

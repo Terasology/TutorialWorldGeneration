@@ -7,7 +7,7 @@
 _This is a tutorial module for [Terasology].
 It explains the concepts of world generation and how to apply them to implement new world generators._
 
-<h2 align="center"><a href="https://terasology.github.io/Health">👉 Tutorial 👈</a></h2>
+<h2 align="center"><a href="https://terasology.github.io/TutorialWorldGeneration/#/tutorial/">👉 Tutorial 👈</a></h2>
 
 ## Features
 

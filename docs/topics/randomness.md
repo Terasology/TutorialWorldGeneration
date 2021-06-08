@@ -1,6 +1,6 @@
 # Randomness
 
-Random numbers play a major role in procedural terrain generation and many other dynamically created content in the game. There are different random number generators and different types of noise. Random number is also related to [Noise](noise).
+Random numbers play a major role in procedural terrain generation and many other dynamically created content in the game. There are different random number generators and different types of noise. Random number is also related to [Noise](topics/noise-overview.md).
 
 ## Random Numbers
 
