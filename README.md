@@ -15,7 +15,7 @@ It explains the concepts of world generation and how to apply them to implement 
 
 Build up information about the landscape and its features from multiple facets.
 Like a cut gem, each facet is one side of a many-sided process.
-Facet providers fro a graph allowing for reuse and compositon.
+Facet providers for a graph allowing for reuse and compositon.
 From dense height maps to sparse object configurations - the choice is yours!
 
 ### World Rasterizers
