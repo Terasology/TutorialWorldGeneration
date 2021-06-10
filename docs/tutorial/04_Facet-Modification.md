@@ -47,4 +47,4 @@ And we add it to our world builder:
     }
 ```
 
-<fig src="/_media/img/facet-modification.png" alt="Facet Modification">And now we have the cliffs of insanity!</fig>
+<fig src="_media/img/facet-modification.png" alt="Facet Modification">And now we have the cliffs of insanity!</fig>

@@ -155,8 +155,8 @@ Now just add the `SurfacesProvider`, `HouseProvider` and `HouseRasterizer` to th
 
 Bingo.  The world is now a village of boring stone dwelling hermits!
 
-<fig src="/_media/img/additional-facet-production-1.png" alt="additional house facet 1"></fig>
-<fig src="/_media/img/additional-facet-production-2.png" alt="additional house facet 2"></fig>
+<fig src="_media/img/additional-facet-production-1.png" alt="additional house facet 1"></fig>
+<fig src="_media/img/additional-facet-production-2.png" alt="additional house facet 2"></fig>
 
 Notice though that there are problems. Some houses are missing walls and roofs. 
 This will happen at the chunk boundary where the neighboring chunk does not know that it should be generating the edge of the house in its chunk.

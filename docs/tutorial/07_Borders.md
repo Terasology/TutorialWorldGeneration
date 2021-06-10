@@ -26,5 +26,5 @@ public void generateChunk(CoreChunk chunk, Region chunkRegion) {
 
 Woot!  Now, *all* our houses have no way of entry or exit... oh wait. _grabs pickaxe_
 
-<fig src="/_media/img/Borders1.png">Note, that with adjusted borders the houses are no longer cut off.</fig>
-<fig src="/_media/img/Borders2.png"></fig>
+<fig src="_media/img/Borders1.png">Note, that with adjusted borders the houses are no longer cut off.</fig>
+<fig src="_media/img/Borders2.png"></fig>

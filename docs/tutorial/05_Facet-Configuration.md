@@ -98,9 +98,9 @@ float mountainHeight = configuration.mountainHeight;
 
 Run the code and you should see your options in the "Details" screen as in the screenshots below.
 
-<fig src="/_media/img/facet-configuration-1.png" alt="Navigate to advanced game setup screen.">Navigate to the advanced game setup screen by clicking "Details".</fig>
+<fig src="_media/img/facet-configuration-1.png" alt="Navigate to advanced game setup screen.">Navigate to the advanced game setup screen by clicking "Details".</fig>
 
-<fig src="/_media/img/facet-configuration-2.png" alt="Slider to adjust mountain height.">A slider to adjust the mountain height</fig>
+<fig src="_media/img/facet-configuration-2.png" alt="Slider to adjust mountain height.">A slider to adjust the mountain height</fig>
 
 > [!NOTE]
 > You can have multiple `@Ranges` in your configuration class. Each one will show up under your configuration section (Mountains in this case).

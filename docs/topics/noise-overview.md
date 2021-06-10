@@ -10,7 +10,7 @@ The `FastNoise` class is a bit different as it works on discrete numbers. This i
 
 **Rule of thumb:** Use `SimplexNoise` whenever possible. Noise that is required per block can also be computed using `FastNoise`.
 
-<fig src="/_media/img/noise-overview.png" alt="overview of noise implementations">An overview over different noise implementations.</fig>
+<fig src="_media/img/noise-overview.png" alt="overview of noise implementations">An overview over different noise implementations.</fig>
 
 *Originally added at https://github.com/MovingBlocks/Terasology/wiki/Randomness-and-Noise*
 
@@ -20,7 +20,7 @@ For terrain generation, the brighter the area, the higher the elevation. The bri
 
 In procedural generation, noise is important to generate a terrain. In this tutorial, we use `SimplexNoise` to generate a simple terrain with some rolling hills. `SimplexNoise` works similar to `PerlinNoise` but with faster performance. Below is a graph which represents the random values generated using Simplex Noise. We use these random values to further building up world and terrain.
 
-<fig src="/_media/img/simplex-noise-graph.png" alt="Perlin Noise Graph">A Perlin noise graph.</fig>
+<fig src="_media/img/simplex-noise-graph.png" alt="Perlin Noise Graph">A Perlin noise graph.</fig>
 
 `SimplexNoise` works by generating a random number between -1 and 1 which is related to the previous and next random numbers. As you can see the line is smooth, that means the differences between each random value are not much. This can help to create a smoother and more organic terrain.
 

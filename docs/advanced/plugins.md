@@ -95,4 +95,4 @@ public class LakesProvider implements FacetProviderPlugin {
 > [!NOTE]
 > Make sure to use a different seed value than other noise or you could cancel each other out.
 
-<fig src="/_media/img/PluginLakes.jpg" alt="the lakes plugin">The Lakes plugin in action.</fig>
+<fig src="_media/img/PluginLakes.jpg" alt="the lakes plugin">The Lakes plugin in action.</fig>
