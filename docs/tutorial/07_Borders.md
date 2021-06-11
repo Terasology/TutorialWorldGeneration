@@ -12,13 +12,13 @@ public class HouseProvider implements FacetProvider {
 
 Now if you remember, we have this line further down ```Border3D border = region.getBorderForFacet(HouseFacet.class).extendBy(0, 8, 4);``` which asks the region to get an appropriate border for the particular facet.  Luckily we have done this same procedure in the ```SurfaceProvider``` and the facet system knows that you are requesting some padding on the sides and bottom of the facet data.
 
-Accomodating this newly found padding on our facet data in our ```HouseRasterizer``` is already done.  All we had do is iterate through the facet's region as opposed to the normal chunk region, which we did in the last section.
+Accommodating this newly found padding on our facet data in our ```HouseRasterizer``` is already done.  All we had do is iterate through the facet's region as opposed to the normal chunk region, which we did in the last section.
 
 ```java
 @Override
 public void generateChunk(CoreChunk chunk, Region chunkRegion) {
     HouseFacet houseFacet = chunkRegion.getFacet(HouseFacet.class);
-    for (Entry<BaseVector3i, House> entry : houseFacet.getWorldEntries().entrySet()) {
+    for (Entry<Vector3ic, House> entry : houseFacet.getWorldEntries().entrySet()) {
         /* ... */
     }
 }

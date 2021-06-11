@@ -19,7 +19,7 @@ public class SurfaceProvider implements FacetProvider {
 
 The key part of this skeleton is the annotation - without it, the world builder will not know how to organize facet providers together.
 
-Now let's reimplement our existing rasterizer data - but lets make it a little more interesting and define our surface as being located y=10, because danger happens at y=10! :P
+Now let's reimplement our existing rasterizer data - but let's make it a little more interesting and define our surface as being located at y=10, because danger happens at y=10! :P
 
 ```java
 @Override
@@ -29,8 +29,8 @@ public void process(GeneratingRegion region) {
     ElevationFacet facet = new ElevationFacet(region.getRegion(), border);
 
     // Loop through every position in our 2d array
-    Rect2i processRegion = facet.getWorldRegion();
-    for (BaseVector2i position: processRegion.contents()) {
+    BlockAreac processRegion = facet.getWorldRegion();
+    for (Vector2ic position : processRegion) {
         facet.setWorld(position, 10f);
     }
 
@@ -58,16 +58,18 @@ protected WorldBuilder createWorld() {
 
 (Oh, right - don't forget to put in the ```SeaLevelProvider``` so that the game doesn't spawn the player 100 meters underwater! You'll need to add CoreWorlds as a dependency in the new module's `module.txt` file. Make sure to recompile or do a `gradlew idea` followed by an Intellij restart.)
 
-Now, when we run the rasterizer, we can access this facet data that we have provided.  Lets use it:
+Now, when we run the rasterizer, we can access this facet data that we have provided.  Let's use it:
 
 ```java
 @Override
-public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+public void generateChunk(Chunk chunk, Region chunkRegion) {
     ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
-    for (Vector3i position : chunkRegion.getRegion()) {
-        float surfaceHeight = elevationFacet.getWorld(position.x, position.z);
-        if (position.y < surfaceHeight) {
-            chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
+
+    Vector3i tmp = new Vector3i();
+    for (Vector3ic position : chunkRegion.getRegion()) {
+        float surfaceHeight = elevationFacet.getWorld(position.x(), position.z());
+        if (position.y() < surfaceHeight) {
+            chunk.setBlock(Chunks.toRelative(position, tmp), dirt);
         }
     }
 }

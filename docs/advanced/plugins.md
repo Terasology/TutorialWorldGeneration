@@ -30,6 +30,7 @@ Here is a sample rasterizer that will make all space that is below the sea level
 
 ```java
 @RegisterPlugin
+@Requires({@Facet(SeaLevelFacet.class), @Facet(ElevationFacet.class)})
 public class LakesRasterizer implements WorldRasterizerPlugin {
     private Block water;
 
@@ -39,15 +40,17 @@ public class LakesRasterizer implements WorldRasterizerPlugin {
     }
 
     @Override
-    public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+    public void generateChunk(Chunk chunk, Region chunkRegion) {
         ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
         SeaLevelFacet seaLevelFacet = chunkRegion.getFacet(SeaLevelFacet.class);
         int seaLevel = seaLevelFacet.getSeaLevel();
-        for (Vector3i position : chunkRegion.getRegion()) {
-            float surfaceHeight = elevationFacet.getWorld(position.x, position.z);
+
+        Vector3i tmp = new Vector3i();
+        for (Vector3ic position : chunkRegion.getRegion()) {
+            float surfaceHeight = elevationFacet.getWorld(position.x(), position.z());
             // check to see if the surface is under the sea level and if we are dealing with something above the surface
-            if (position.y < seaLevel && position.y >= surfaceHeight) {
-                chunk.setBlock(ChunkMath.calcBlockPos(position), water);
+            if (position.y() < seaLevel && position.y() >= surfaceHeight) {
+                chunk.setBlock(Chunks.toRelative(position, tmp), water);
             }
         }
     }
@@ -80,11 +83,11 @@ public class LakesProvider implements FacetProviderPlugin {
         ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
         float lakeDepth = 40;
         // loop through every position on our 2d array
-        Rect2i processRegion = facet.getWorldRegion();
-        for (BaseVector2i position : processRegion.contents()) {
+        BlockAreac processRegion = facet.getWorldRegion();
+        for (Vector2ic position : processRegion) {
             float additiveLakeDepth = lakeNoise.noise(position.x(), position.y()) * lakeDepth;
             // dont bother adding lake height,  that will allow unaffected regions
-            additiveLakeDepth = TeraMath.clamp(additiveLakeDepth, -lakeDepth, 0);
+            additiveLakeDepth = Math.clamp(additiveLakeDepth, -lakeDepth, 0);
 
             facet.setWorld(position, facet.getWorld(position) + additiveLakeDepth);
         }

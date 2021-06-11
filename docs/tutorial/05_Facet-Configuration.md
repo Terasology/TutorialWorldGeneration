@@ -47,12 +47,12 @@ public class MountainsProvider implements ConfigurableFacetProvider {
         ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
         float mountainHeight = 400;
         // loop through every position on our 2d array
-        Rect2i processRegion = facet.getWorldRegion();
-        for (BaseVector2i position : processRegion.contents()) {
+        BlockAreac processRegion = facet.getWorldRegion();
+        for (Vector2ic position : processRegion) {
             // scale our max mountain height to noise (between -1 and 1)
             float additiveMountainHeight = mountainNoise.noise(position.x(), position.y()) * mountainHeight;
             // dont bother subtracting mountain height,  that will allow unaffected regions
-            additiveMountainHeight = TeraMath.clamp(additiveMountainHeight, 0, mountainHeight);
+            additiveMountainHeight = Math.clamp(additiveMountainHeight, 0, mountainHeight);
 
             facet.setWorld(position, facet.getWorld(position) + additiveMountainHeight);
         }

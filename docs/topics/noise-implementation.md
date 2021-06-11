@@ -17,7 +17,7 @@ Parameters of BrownianNoise:
 BrownianNoise(Noise other, int octaves)
 ```
 
-For the mountains terrain in this tutorial, the `other` is set to `new PerlinNoise(seed + 2)`. The octave is `8`. Let's change the octave to 4 and see what will happen?
+For the mountains terrain in this tutorial, the `other` is set to `new SimplexNoise(seed + 2)`. The octave is `8`. Let's change the octave to 4 and see what will happen?
 
 <fig src="_media/img/brownianPerlinOctave4.png" alt="Brownian noise with octave 4">Layered Brownian noise with 4 octaves.</fig>
 
@@ -25,7 +25,7 @@ The mountains are more rounded and also the gaps (valleys) between each one are 
 
 <fig src="_media/img/brownianPerlinOctave8.png" alt="Brownian noise with octave 4">Layered Brownian noise with 8 octaves viewed from the same position.</fig>
 
-`octaves` is used to determine how many noise functions are added together to form 1 noise function, in this case `PerlinNoise`. The number of octaves control the amount of detail of `PerlinNoise`. More octaves, more noise functions added, more details and more calculation.
+`octaves` is used to determine how many noise functions are added together to form 1 noise function, in this case `SimplexNoise`. The number of octaves control the amount of detail of `SimplexNoise`. More octaves, more noise functions added, more details and more calculation.
 
 ### SubSampledNoise
 
@@ -35,7 +35,7 @@ This is used to smooth out the noise by "zooming in" or "stretching" the noise v
 SubSampledNoise(Noise source, Vector3f zoom, int sampleRate)
 ```
 
-The `source` is the noise generator. For example, in the mountains terrain, we use `new BrownianNoise(new PerlinNoise(seed + 2), 8)`. The `zoom` is `0.001f, 0.001f, 1f` - default value for z axis is 1 as noise map is 2D. The `sampleRate` is `1`.
+The `source` is the noise generator. For example, in the mountains terrain, we use `new BrownianNoise(new SimplexNoise(seed + 2), 8)`. The `zoom` is `0.001f, 0.001f, 1f` - default value for z axis is 1 as noise map is 2D. The `sampleRate` is `1`.
 
 The `zoom` is used to zoom in/out the noise map and to adjust noise's frequency. Let's take a look at some examples - we're still using mountain terrains as examples for clearer images.
 

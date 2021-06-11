@@ -11,7 +11,7 @@ public class MountainsProvider implements FacetProvider {
     @Override
     public void setSeed(long seed) {
         mountainNoise = new SubSampledNoise(
-            new BrownianNoise(new PerlinNoise(seed + 2), 8), new Vector2f(0.001f, 0.001f), 1);
+            new BrownianNoise(new SimplexNoise(seed + 2), 8), new Vector2f(0.001f, 0.001f), 1);
     }
 
     @Override
@@ -19,12 +19,12 @@ public class MountainsProvider implements FacetProvider {
         ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
         float mountainHeight = 400;
         // loop through every position on our 2d array
-        Rect2i processRegion = facet.getWorldRegion();
-        for (BaseVector2i position : processRegion.contents()) {
+        BlockAreac processRegion = facet.getWorldRegion();
+        for (Vector2ic position : processRegion) {
             // scale our max mountain height to noise (between -1 and 1)
             float additiveMountainHeight = mountainNoise.noise(position.x(), position.y()) * mountainHeight;
             // don't bother subtracting mountain height, that will allow unaffected regions
-            additiveMountainHeight = TeraMath.clamp(additiveMountainHeight, 0, mountainHeight);
+            additiveMountainHeight = Math.clamp(additiveMountainHeight, 0, mountainHeight);
 
             facet.setWorld(position, facet.getWorld(position) + additiveMountainHeight);
         }
@@ -32,7 +32,7 @@ public class MountainsProvider implements FacetProvider {
 }
 ```
 
-Dont miss the `@Updates` magic that allows this provider to be ordered correctly in relation to other facet providers.
+Don't miss the `@Updates` magic that allows this provider to be ordered correctly in relation to other facet providers.
 
 And we add it to our world builder:
 

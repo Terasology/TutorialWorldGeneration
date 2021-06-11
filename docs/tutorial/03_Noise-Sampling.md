@@ -15,15 +15,15 @@ And plug it in to our facet data
 
 ```java
         // loop through every position on our 2d array
-        Rect2i processRegion = facet.getWorldRegion();
-        for (BaseVector2i position : processRegion.contents()) {
+        BlockAreac processRegion = facet.getWorldRegion();
+        for (Vector2ic position : processRegion) {
             facet.setWorld(position, surfaceNoise.noise(position.x(), position.y()));
         }
 ```
 
-And if you are lucky like me,  you end up with a bumpy patch of dirt as the noise is only between -1 and 1
+And if you are lucky like me,  you end up with a bumpy patch of dirt as the noise is only between -1 and 1.
 
-Lets smooth it out a little bit by using subsampling (lerps between noise values) to gradually get to various noise values. And scale it up a bit so that we can get random surface values that are more interesting.
+Let's smooth it out a little bit by using subsampling (linear interpolation between noise values) to gradually get to various noise values. And scale it up a bit so that we can get random surface values that are more interesting.
 
 ```java
         facet.setWorld(position, surfaceNoise.noise(position.x(), position.y()) * 20);

@@ -1,8 +1,5 @@
 # Zones
 
-> [!WARNING]
-> Zones are a feature for v2, so the `v2.0.0` branch of the engine must be used to access these features!
-
 ### What are zones
 
 Zones allow the world generator to be split up into separate areas for the purposes of generation and previews.
@@ -49,7 +46,7 @@ worldGenerator.addZone(new Zone("UndergroundStone", (x, y, z, region) ->
 
 ### Preview layers
 
-Zones can also have preview layers added to them, and the top level zones (those added directly to the `WorldBuidler`) will show up on the world preview screen as a drop-down list to choose which to preview.
+Zones can also have preview layers added to them, and the top level zones (those added directly to the `WorldBuilder`) will show up on the world preview screen as a drop-down list to choose which to preview.
 
 The preview layers are the same `FacetLayer`s that the world preview uses, and they are added to a zone with the `addPreviewLayer` method.
 

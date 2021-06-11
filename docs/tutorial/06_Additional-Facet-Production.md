@@ -7,7 +7,7 @@ But first,  the facet class itself:
 ```java
 public class HouseFacet extends SparseObjectFacet3D<House> {
 
-    public HouseFacet(Region3i targetRegion, Border3D border) {
+    public HouseFacet(BlockRegion targetRegion, Border3D border) {
         super(targetRegion, border);
     }
 }
@@ -36,9 +36,10 @@ public class SurfacesProvider implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {
         ElevationFacet elevation = region.getRegionFacet(ElevationFacet.class);
-        SurfacesFacet surfacesFacet = new SurfacesFacet(region.getRegion(), region.getBorderForFacet(SurfacesFacet.class));
+        SurfacesFacet surfacesFacet = new SurfacesFacet(region.getRegion(),
+                region.getBorderForFacet(SurfacesFacet.class));
 
-        for (BaseVector2i pos : elevation.getWorldRegion().contents()) {
+        for (Vector2ic pos : elevation.getWorldRegion()) {
             int height = (int) Math.ceil(elevation.getWorld(pos)) - 1;
             if (height >= surfacesFacet.getWorldRegion().minY() && height <= surfacesFacet.getWorldRegion().maxY()) {
                 surfacesFacet.setWorld(pos.x(), height, pos.y(), true);
@@ -70,7 +71,7 @@ public class HouseProvider implements FacetProvider {
         HouseFacet facet = new HouseFacet(region.getRegion(), border);
         SurfacesFacet surfacesFacet = region.getRegionFacet(SurfacesFacet.class);
 
-        Region3i worldRegion = surfacesFacet.getWorldRegion();
+        BlockRegion worldRegion = surfacesFacet.getWorldRegion();
 
         for (int wz = worldRegion.minZ(); wz <= worldRegion.maxZ(); wz++) {
             for (int wx = worldRegion.minX(); wx <= worldRegion.maxX(); wx++) {
@@ -113,23 +114,25 @@ public class HouseRasterizer implements WorldRasterizer {
     }
 
     @Override
-    public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+    public void generateChunk(Chunk chunk, Region chunkRegion) {
         HouseFacet houseFacet = chunkRegion.getFacet(HouseFacet.class);
 
-        for (Entry<BaseVector3i, House> entry : houseFacet.getWorldEntries().entrySet()) {
+        for (Entry<Vector3ic, House> entry : houseFacet.getWorldEntries().entrySet()) {
             // there should be a house here
             // create a couple 3d regions to help iterate through the cube shape, inside and out
             Vector3i centerHousePosition = new Vector3i(entry.getKey());
             int extent = entry.getValue().getExtent();
             centerHousePosition.add(0, extent, 0);
-            Region3i walls = Region3i.createFromCenterExtents(centerHousePosition, extent);
-            Region3i inside = Region3i.createFromCenterExtents(centerHousePosition, extent - 1);
+            BlockRegion walls = new BlockRegion(centerHousePosition).expand(extent, extent, extent);
+            BlockRegion inside = new BlockRegion(centerHousePosition).expand(extent - 1, extent - 1, extent - 1);
 
-            // loop through each of the positions in the cube, ignoring the inside
-            for (Vector3i newBlockPosition : walls) {
-                if (chunkRegion.getRegion().encompasses(newBlockPosition)
-                        && !inside.encompasses(newBlockPosition)) {
-                    chunk.setBlock(ChunkMath.calcBlockPos(newBlockPosition), stone);
+            // loop through each of the positions in the cube, ignoring the is
+            // reusing one mutable vector is more efficient than creating a new one for each toRelative()
+            Vector3i tmp = new Vector3i();
+            for (Vector3ic newBlockPosition : walls) {
+                if (chunkRegion.getRegion().contains(newBlockPosition)
+                        && !inside.contains(newBlockPosition)) {
+                    chunk.setBlock(Chunks.toRelative(newBlockPosition, tmp), stone);
                 }
             }
         }

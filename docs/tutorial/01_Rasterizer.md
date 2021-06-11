@@ -33,14 +33,14 @@ public class TutorialWorldRasterizer implements WorldRasterizer {
     }
 
     @Override
-    public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+    public void generateChunk(Chunk chunk, Region chunkRegion) {
     }
 }
 ```
 
 The `generateChunk()` method is where the magic will happen - the ```chunk``` parameter interacts directly with chunk storage where you can place blocks, while the ```chunkRegion``` parameter holds metadata about the world.  There's nothing in the `generateChunk()` method right now, but we will get there soon enough :)
 
-Now let's add some basic rasterization, replacing every block below y=0 with dirt.
+Now let's add some basic rasterization, replacing every block below y=0 with dirt.  Note that you should always change your coordinates from world coordinates to chunk-relative coordinates when setting the block on the chunk:
 
 ```java
 public class TutorialWorldRasterizer implements WorldRasterizer {
@@ -52,17 +52,17 @@ public class TutorialWorldRasterizer implements WorldRasterizer {
     }
 
     @Override
-    public void generateChunk(CoreChunk chunk, Region chunkRegion) {
-        for (Vector3iC position : chunkRegion.getRegion()) {
+    public void generateChunk(Chunk chunk, Region chunkRegion) {
+        // reusing one mutable vector is more efficient than creating a new one for each toRelative()
+        Vector3i tmp = new Vector3i();
+        for (Vector3ic position : chunkRegion.getRegion()) {
             if (position.y() < 0) {
-                chunk.setBlock(position, dirt);
+                chunk.setBlock(Chunks.toRelative(position, tmp), dirt);
             }
         }
     }
 }
 ```
-
-Note that you should always change your coordinates from regional to local when setting the block on the chunk.
 
 Finally, let's add the rasterizer to the world builder:
 
