@@ -16,10 +16,10 @@ A facet, is a side of a many-sided object. Take for instance a map of the Earth.
 A facet is one of these things. What does this have to do with our dear game Terasology you ask? Well, 3D-worlds are as you know not plain 3D fields with only dirt! The worlds contain objects, have properties and so on. One 'facet' of the world might be the biomes. Another one could be where that certain fruit grows.
 
 **What is a FacetProvider?**
-A FacetProvider is, as the name itself says, a class that providers the world with the appropriate facet for a certain region. What you typically do in here is scan through the blocks and check for a condition. If that condition is true, you do something, such as placing a facet on that particular coordinate which you scanned through.
+A FacetProvider is, as the name itself says, a class that provides the world with the appropriate facet for a certain region. What you typically do in here is scan through the blocks and check for a condition. If that condition is true, you do something, such as placing a facet on that particular coordinate which you scanned through.
 
 **What is a Rasterizer?**
-This is where it gets intresting. A rasterizer is what interprets the Facet data. The rasterizer is where you place the blocks in the world.
+This is where it gets interesting. A rasterizer is what interprets the Facet data. The rasterizer is where you place the blocks in the world.
 
 Simple enough? Well, let's get started with some tips on how to make some more complex shapes, such as pyramids.
 Let us start with a problem definition, what do we want?
@@ -38,7 +38,7 @@ We should start out with creating our classes. (Try to find the solution on thes
 ```java
 public class TempleFacet extends SparseObjectFacet3D<Temple> {
 
-    public TempleFacet(Region3i targetRegion, Border3D border) {
+    public TempleFacet(BlockRegion targetRegion, Border3D border) {
         super(targetRegion, border);
     }
 }
@@ -73,7 +73,7 @@ public class TempleRasterizer implements WorldRasterizer {
     }
 
     @Override
-    public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+    public void generateChunk(Chunk chunk, Region chunkRegion) {
         
     }
 }
@@ -112,7 +112,7 @@ SurfacesFacet surfacesFacet = region.getRegionFacet(SurfacesFacet.class);
 ```
 We will iterate over the locations where both facets are defined. Which of them is defined over a larger area may depend on other parts of the world generator, so we iterate over the locations in one, then check that they're also in the other.
 ```java
-Region3i worldRegion = surfacesFacet.getWorldRegion();
+BlockRegion worldRegion = surfacesFacet.getWorldRegion();
 ```
 That's about all we need to start looping and doing the nice stuff.  
 Loop through the surface points within this region.
@@ -120,7 +120,7 @@ Loop through the surface points within this region.
 for (int wx = worldRegion.minX(); wx <= worldRegion.maxX(); wx++) {
     for (int wz = worldRegion.minZ(); wz <= worldRegion.maxZ(); wz++) {
         for (int wy : surfacesFacet.getWorldColumn(wx, wz)) {
-            if (facet.getWorldRegion().encompasses(wx, wy, wz)) {
+            if (facet.getWorldRegion().contains(wx, wy, wz)) {
                 // Content here
             }
         }
@@ -157,7 +157,7 @@ chunkRegion.getFacet(TempleFacet.class);
 ```
 Loop through the WorldEntries like so
 ```java
-for (Entry<BaseVector3i, Temple> entry : templeFacet.getWorldEntries().entrySet()) {
+for (Entry<Vector3ic, Temple> entry : templeFacet.getWorldEntries().entrySet()) {
 ```
 This is the most vital part. If you go check locally on the chunk itself you will get buildings cut in half!
 
@@ -175,8 +175,9 @@ for (int i = 0; i <= height; i++) {
     for (int x = min; x <= size; x++) {
         for (int z = min; z <= size; z++) {
             Vector3i chunkBlockPosition = new Vector3i(x, i, z).add(basePosition);
-            if (chunk.getRegion().encompasses(chunkBlockPosition) && !region3i1.encompasses(chunkBlockPosition) &&     !region3i2.encompasses(chunkBlockPosition))
-                chunk.setBlock(ChunkMath.calcBlockPos(chunkBlockPosition), stone);
+            if (chunk.getRegion().contains(chunkBlockPosition) && !region3i1.contains(chunkBlockPosition) &&
+                !region3i2.contains(chunkBlockPosition))
+                chunk.setBlock(Chunks.toRelative(chunkBlockPosition), stone);
 
         }
     }

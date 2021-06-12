@@ -21,6 +21,7 @@ import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.utilities.procedural.BrownianNoise;
 import org.terasology.engine.utilities.procedural.Noise;
 import org.terasology.engine.utilities.procedural.PerlinNoise;
+import org.terasology.engine.utilities.procedural.SimplexNoise;
 import org.terasology.engine.utilities.procedural.SubSampledNoise;
 import org.terasology.engine.world.block.BlockArea;
 import org.terasology.engine.world.block.BlockAreac;
@@ -30,8 +31,7 @@ import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
 import org.terasology.nui.properties.Range;
-
-import static org.joml.Math.clamp;
+import org.joml.Math;
 
 @Updates(@Facet(ElevationFacet.class))
 public class MountainsProvider implements ConfigurableFacetProvider {
@@ -46,7 +46,7 @@ public class MountainsProvider implements ConfigurableFacetProvider {
         final float zoomRatio = 0.01f;
         float mountainNoiseZoom = configuration.mountainNoiseZoomRatio * zoomRatio;
         // Default zoom is 0.001f. Max zoom is 0.01f
-        mountainNoise = new SubSampledNoise(new BrownianNoise(new PerlinNoise(seed + 2), 8),
+        mountainNoise = new SubSampledNoise(new BrownianNoise(new SimplexNoise(seed + 2), 8),
                 new Vector2f(mountainNoiseZoom, mountainNoiseZoom), 1);
     }
 
@@ -59,8 +59,8 @@ public class MountainsProvider implements ConfigurableFacetProvider {
         for (Vector2ic position : processArea) {
             // scale our max mountain height to noise (between -1 and 1)
             float additiveMountainHeight = mountainNoise.noise(position.x(), position.y()) * mountainHeight;
-            // dont bother subtracting mountain height,  that will allow unaffected regions
-            additiveMountainHeight = clamp(additiveMountainHeight, 0, mountainHeight);
+            // don't bother subtracting mountain height,  that will allow unaffected regions
+            additiveMountainHeight = Math.clamp(additiveMountainHeight, 0, mountainHeight);
 
             facet.setWorld(position, facet.getWorld(position) + additiveMountainHeight);
         }
