@@ -1,7 +1,7 @@
 # Biomes
 
 Biomes in Terasology represent region-specific world metadata of sorts. They
-can be used in runtime as means of scheduling music to play/mobs to spawn/
+can be used at runtime as means of scheduling music to play/mobs to spawn/
 selecting color of unicorns/whatever to fit the surroundings, and thus 
 improving player experience (you don't want whales to spawn in every pond).
 Biomes can also be used as sorts of additional data used when generating
@@ -102,6 +102,61 @@ public enum TutorialBiome implements Biome {
 > [!NOTE]
 > The biome hashes have to be explicitly casted to `short` due to how Java handles numerical literals
 
+There are a few other optional methods which might or might not be useful depending on how you're using biomes.
+The methods which query block types are used by the rasterizers in the CoreWorlds module to figure out what block types to place, but aren't used by anything in this tutorial:
+
+```java
+    private Block stone;
+    private Block grass;
+    private Block water;
+    
+    TutorialBiome(String displayName) {
+        this.id = new Name("TutorialWorldGeneration:" + name());
+        this.displayName = displayName;
+    
+        BlockManager blockManager = CoreRegistry.get(BlockManager.class);
+        stone = blockManager.getBlock("CoreAssets:Stone");
+        grass = blockManager.getBlock("CoreAssets:Grass");
+        water = blockManager.getBlock("CoreAssets:Water");
+    }
+    
+    @Override
+    public Block getBelowSurfaceBlock(Vector3ic pos, float density) {
+        if (this == WATER) {
+            return water;
+        } else {
+            return stone;
+        }
+    }
+    
+    @Override
+    public Block getSurfaceBlock(Vector3ic pos, int seaLevel) {
+        if (this == WATER) {
+            return water;
+        } else {
+            return grass;
+        }
+    }
+```
+
+The methods for querying humidity and temperature are used to figure out what color to make blocks like leaves and grass in that biome:
+
+```java
+    @Override
+    public float getHumidity() {
+        if (this == WATER) {
+            return 0.8f;
+        } else {
+            return 0.5f;
+        }
+    }
+
+    @Override
+    public float getTemperature() {
+        return 0.5f;
+    }
+```
+
 Now that you have created your biomes, you also need to register them with the
 BiomesAPI module. To do that, create a plain old ComponentSystem, and in its
 `preBegin` method, register each of the biomes as following
@@ -123,8 +178,10 @@ public class TutorialBiomes extends BaseComponentSystem {
 
 Now that you have the biomes all set up and ready to use, you can finally get
 to the last step, populating the world with the biomes. You do this as you
-would populate the world with blocks, by creating a new rasterizer. For the
-behaviour as used by this tutorial, the rasterizer can look like this:
+would populate the world with blocks, by creating a new rasterizer.
+In practice, you'll usually be using an existing rasterizer that does this for you,
+like the `SolidRasterizer` from CoreWorlds, but it would use the same principles.
+For the behaviour as used by this tutorial, the rasterizer can look like this:
 
 ```java
 @Requires({@Facet(SeaLevelFacet.class), @Facet(ElevationFacet.class)})
@@ -154,7 +211,7 @@ public class BiomeRasterizer implements WorldRasterizer {
 }
 ```
 
-You can of course also create a 2d/3d `Facet`, its respective `FacetProvider`
-and do lots of more interesting things with designating biomes, but after
+You can of course also create a 2d/3d `Facet` (or use the existing `BiomeFacet` from CoreWorlds),
+its respective `FacetProvider` and do lots of more interesting things with designating biomes, but after
 going through this tutorial, you should already have high enough grasp of the
 principles used when dealing with biomes to figure that out by yourself.

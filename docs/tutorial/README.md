@@ -1,7 +1,7 @@
 # Overview
 
 The tutorial guides you through the basic world generation concepts steps by step.
-We recommend to goe through the steps in order, and apply what you've learned in a new sandbox module. 
+We recommend going through the steps in order, and applying what you've learned in a new sandbox module. 
 
 1. [Rasterizer](tutorial/01_Rasterizer.md)
 2. [Facet Production](tutorial/02_Facet-Production.md)

@@ -35,3 +35,5 @@ You may think that the noise behaves like a wave with a bunch of random numbers.
 **Wavelength** - the distance between two consecutive crests or troughs of a wave
 
 **Octave** - number of noise functions added together to form one function. This is used in `BrownianNoise`. Usually, each octave apart has double the frequency.
+
+It's important to note that because `BrownianNoise` with more than one octave adds multiple layers of the underlying noise function together, its value isn't always in between -1 and 1.
