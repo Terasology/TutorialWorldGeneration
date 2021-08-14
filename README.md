@@ -1,5 +1,5 @@
 <div align="center">
-<img src="./docs/_media/banner.png">
+<img src="https://raw.githubusercontent.com/Terasology/TutorialWorldGeneration/master/docs/_media/banner.png">
 </div>
 
 # Tutorial: World Generation

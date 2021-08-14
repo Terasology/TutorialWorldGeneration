@@ -39,7 +39,9 @@
         function (hook) {
           // this "fixes" the relative links in the README which is loaded from remote (see 'homepage' above)
           hook.beforeEach(function (content) {
-            return content.replace(new RegExp("./docs/"), "/");
+            return content
+              .replace(new RegExp("https://raw.githubusercontent.com/Terasology/TutorialWorldGeneration/master/docs/"), "")
+              .replace(new RegExp("./docs/"), "");
           })
         }
       ],
