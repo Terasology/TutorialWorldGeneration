@@ -15,7 +15,11 @@
  */
 package org.terasology.tutorialWorldGenerationBiomes;
 
+import org.joml.Vector3ic;
 import org.terasology.biomesAPI.Biome;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockManager;
 import org.terasology.gestalt.naming.Name;
 
 public enum TutorialBiome implements Biome {
@@ -26,9 +30,18 @@ public enum TutorialBiome implements Biome {
     private final Name id;
     private final String displayName;
 
+    private Block stone;
+    private Block grass;
+    private Block water;
+
     TutorialBiome(String displayName) {
         this.id = new Name("TutorialWorldGeneration:" + name());
         this.displayName = displayName;
+
+        BlockManager blockManager = CoreRegistry.get(BlockManager.class);
+        stone = blockManager.getBlock("CoreAssets:Stone");
+        grass = blockManager.getBlock("CoreAssets:Grass");
+        water = blockManager.getBlock("CoreAssets:Water");
     }
 
     @Override
@@ -44,5 +57,37 @@ public enum TutorialBiome implements Biome {
     @Override
     public String toString() {
         return this.displayName;
+    }
+
+    @Override
+    public Block getBelowSurfaceBlock(Vector3ic pos, float density) {
+        if (this == WATER) {
+            return water;
+        } else {
+            return stone;
+        }
+    }
+
+    @Override
+    public Block getSurfaceBlock(Vector3ic pos, int seaLevel) {
+        if (this == WATER) {
+            return water;
+        } else {
+            return grass;
+        }
+    }
+
+    @Override
+    public float getHumidity() {
+        if (this == WATER) {
+            return 0.8f;
+        } else {
+            return 0.5f;
+        }
+    }
+
+    @Override
+    public float getTemperature() {
+        return 0.5f;
     }
 }

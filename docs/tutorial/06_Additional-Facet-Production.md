@@ -126,7 +126,7 @@ public class HouseRasterizer implements WorldRasterizer {
             BlockRegion walls = new BlockRegion(centerHousePosition).expand(extent, extent, extent);
             BlockRegion inside = new BlockRegion(centerHousePosition).expand(extent - 1, extent - 1, extent - 1);
 
-            // loop through each of the positions in the cube, ignoring the is
+            // loop through each of the positions in the cube, ignoring the indices
             // reusing one mutable vector is more efficient than creating a new one for each toRelative()
             Vector3i tmp = new Vector3i();
             for (Vector3ic newBlockPosition : walls) {

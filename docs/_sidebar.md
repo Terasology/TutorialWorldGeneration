@@ -10,11 +10,12 @@
   * [Troubleshooting](tutorial/troubleshooting.md)
 * Advanced
   * [Plugins](advanced/plugins.md)
+  * [Biomes](advanced/biomes.md)
+  * [Ordering Facet Providers](advanced/facet-provider-order.md)
   * [Facets Across Borders](advanced/facets-across-borders.md)
   * [Zones](advanced/zones.md)
   * [World Viewer](advanced/world-viewer.md)
 * Knowledge Base
-  * [Biomes](topics/biomes.md)
   * [Randomness](topics/randomness.md)
   * Noise
     * [Overview](topics/noise-overview.md)
