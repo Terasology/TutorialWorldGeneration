@@ -15,23 +15,21 @@
  */
 package org.terasology.tutorialWorldGeneration;
 
+import org.joml.Math;
 import org.joml.Vector2f;
 import org.joml.Vector2ic;
-import org.terasology.engine.entitySystem.Component;
 import org.terasology.engine.utilities.procedural.BrownianNoise;
 import org.terasology.engine.utilities.procedural.Noise;
-import org.terasology.engine.utilities.procedural.PerlinNoise;
 import org.terasology.engine.utilities.procedural.SimplexNoise;
 import org.terasology.engine.utilities.procedural.SubSampledNoise;
-import org.terasology.engine.world.block.BlockArea;
 import org.terasology.engine.world.block.BlockAreac;
 import org.terasology.engine.world.generation.ConfigurableFacetProvider;
 import org.terasology.engine.world.generation.Facet;
 import org.terasology.engine.world.generation.GeneratingRegion;
 import org.terasology.engine.world.generation.Updates;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
+import org.terasology.gestalt.entitysystem.component.Component;
 import org.terasology.nui.properties.Range;
-import org.joml.Math;
 
 @Updates(@Facet(ElevationFacet.class))
 public class MountainsProvider implements ConfigurableFacetProvider {
@@ -81,11 +79,17 @@ public class MountainsProvider implements ConfigurableFacetProvider {
         this.configuration = (MountainsConfiguration) configuration;
     }
 
-    private static class MountainsConfiguration implements Component {
+    private static class MountainsConfiguration implements Component<MountainsConfiguration> {
         @Range(min = 200, max = 500f, increment = 20f, precision = 1, description = "Mountain Height")
         private float mountainHeight = 400;
 
         @Range(min = 0.1f, max = 1f, increment = 0.1f, precision = 1, description = "Mountain Noise Zoom (Ratio)")
         private float mountainNoiseZoomRatio = 0.1f;
+
+        @Override
+        public void copyFrom(MountainsConfiguration other) {
+            this.mountainHeight = other.mountainHeight;
+            this.mountainNoiseZoomRatio = other.mountainNoiseZoomRatio;
+        }
     }
 }
