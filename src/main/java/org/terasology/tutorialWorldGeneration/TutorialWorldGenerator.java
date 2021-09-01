@@ -27,12 +27,12 @@ import org.terasology.tutorialWorldGenerationBiomes.BiomeRasterizer;
 @RegisterWorldGenerator(id = "tutorialWorld", displayName = "Tutorial World")
 public class TutorialWorldGenerator extends BaseFacetedWorldGenerator {
 
+    @In
+    private WorldGeneratorPluginLibrary worldGeneratorPluginLibrary;
+
     public TutorialWorldGenerator(SimpleUri uri) {
         super(uri);
     }
-
-    @In
-    private WorldGeneratorPluginLibrary worldGeneratorPluginLibrary;
 
     @Override
     protected WorldBuilder createWorld() {

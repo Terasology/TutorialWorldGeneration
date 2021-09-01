@@ -39,8 +39,8 @@ public class LakesProvider implements FacetProviderPlugin {
 
     @Override
     public void setSeed(long seed) {
-        lakeNoise = new SubSampledNoise(new BrownianNoise(new PerlinNoise(seed + 3), 4), new Vector2f(0.001f, 0.001f)
-                , 1);
+        lakeNoise = new SubSampledNoise(
+                new BrownianNoise(new PerlinNoise(seed + 3), 4), new Vector2f(0.001f, 0.001f), 1);
     }
 
     @Override

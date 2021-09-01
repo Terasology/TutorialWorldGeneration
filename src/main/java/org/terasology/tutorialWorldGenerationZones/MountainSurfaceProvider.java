@@ -28,10 +28,10 @@ import org.terasology.engine.world.generation.facets.ElevationFacet;
 
 @Updates(@Facet(ElevationFacet.class))
 public class MountainSurfaceProvider implements FacetProvider {
+    public static final int MIN_MOUNTAIN_HEIGHT = 80;
+    private static final float MOUNTAIN_HEIGHT_MULTIPLIER = 1f;
 
     private Noise mountainNoise;
-    public final static int MIN_MOUNTAIN_HEIGHT = 80;
-    private final static float MOUNTAIN_HEIGHT_MULTIPLIER = 1f;
 
     @Override
     public void setSeed(long seed) {

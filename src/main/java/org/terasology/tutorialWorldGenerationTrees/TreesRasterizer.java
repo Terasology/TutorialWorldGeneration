@@ -33,7 +33,8 @@ import java.util.Map;
  * Class for building up trees.
  */
 public class TreesRasterizer implements WorldRasterizerPlugin {
-    private Block trunk, leaf;
+    private Block trunk;
+    private Block leaf;
 
     @Override
     public void initialize() {
