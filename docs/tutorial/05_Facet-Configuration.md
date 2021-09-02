@@ -76,10 +76,14 @@ public class MountainsProvider implements ConfigurableFacetProvider {
         this.configuration = (MountainsConfiguration)configuration;
     }
 
-    private static class MountainsConfiguration implements Component
-    {
+    private static class MountainsConfiguration implements Component<MountainsConfiguration> {
         @Range(min = 200, max = 500f, increment = 20f, precision = 1, description = "Mountain Height")
         private float mountainHeight = 400;
+        
+        @Override
+        public void copyFrom(MountainsConfiguration other) {
+            this.mountainHeight = other.mountainHeight;
+        }
     }
 }
 ```

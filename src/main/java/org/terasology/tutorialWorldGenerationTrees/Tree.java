@@ -19,11 +19,11 @@ package org.terasology.tutorialWorldGenerationTrees;
  * Class for a tree, containing its variables.
  */
 public class Tree {
-    private final int TRUNK_HEIGHT = 4;
-    private final int CROWN_HEIGHT = 2;
-    private final int TOP_CROWN_HEIGHT = 1;
-    private final int CROWN_RADIUS = 2;
-    private final int TOP_CROWN_WIDTH = 3;
+    private static final int TRUNK_HEIGHT = 4;
+    private static final int CROWN_HEIGHT = 2;
+    private static final int TOP_CROWN_HEIGHT = 1;
+    private static final int CROWN_RADIUS = 2;
+    private static final int TOP_CROWN_WIDTH = 3;
 
     /**
      * The height of a tree.
